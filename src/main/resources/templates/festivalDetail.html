@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${festival.nome}">Dettaglio Festival</title>
+</head>
+<body>
+    <h1 th:text="${festival.nome}">Nome Festival</h1>
+    <p th:text="'Città: ' + ${festival.citta}">Città</p>
+    <p th:text="'Anno: ' + ${festival.anno}">Anno</p>
+    <p th:text="${festival.descrizione}">Descrizione</p>
+
+    <h2>Film partecipanti</h2>
+    <ul>
+        <li th:each="film : ${festival.film}" th:text="${film.titolo}">Titolo film</li>
+    </ul>
+
+    <p><a th:href="@{/festivals}">Torna all'elenco</a></p>
+</body>
+</html>

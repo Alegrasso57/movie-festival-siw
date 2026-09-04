@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Elenco Festival</title>
+</head>
+<body>
+    <h1>Festival cinematografici</h1>
+
+    <div th:each="festival : ${festivals}">
+        <h2>
+            <a th:href="@{/festival/{id}(id=${festival.id})}" th:text="${festival.nome}">Nome Festival</a>
+        </h2>
+        <p th:text="${festival.citta} + ' - ' + ${festival.anno}">Città - Anno</p>
+    </div>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>
