@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Regista</title>
+</head>
+<body>
+    <h1>Regista</h1>
+
+    <form th:action="@{/admin/registi}" method="post">
+        <input type="hidden" name="id" th:value="${regista.id}">
+
+        <label>Nome: <input type="text" name="nome" th:value="${regista.nome}"></label><br>
+        <label>Cognome: <input type="text" name="cognome" th:value="${regista.cognome}"></label><br>
+        <label>Data di nascita: <input type="date" name="dataNascita" th:value="${regista.dataNascita}"></label><br>
+        <label>Nazionalità: <input type="text" name="nazionalita" th:value="${regista.nazionalita}"></label><br>
+
+        <button type="submit">Salva</button>
+    </form>
+
+    <p><a th:href="@{/admin/registi}">Annulla</a></p>
+</body>
+</html>

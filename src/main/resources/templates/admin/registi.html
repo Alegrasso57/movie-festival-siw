@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Registi</title>
+</head>
+<body>
+    <h1>Gestione Registi</h1>
+
+    <a th:href="@{/admin/registi/nuovo}">+ Nuovo regista</a>
+
+    <ul>
+        <li th:each="regista : ${registi}">
+            <span th:text="${regista.nome} + ' ' + ${regista.cognome}">Nome Cognome</span>
+            <a th:href="@{/admin/registi/{id}/modifica(id=${regista.id})}">Modifica</a>
+            <form th:action="@{/admin/registi/{id}/elimina(id=${regista.id})}" method="post" style="display:inline;">
+                <button type="submit">Elimina</button>
+            </form>
+        </li>
+    </ul>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>

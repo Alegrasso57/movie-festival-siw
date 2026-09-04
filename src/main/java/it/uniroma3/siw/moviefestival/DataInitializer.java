@@ -1,17 +1,20 @@
-
 package it.uniroma3.siw.moviefestival;
 
 import java.time.LocalDate;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import it.uniroma3.siw.moviefestival.model.Festival;
 import it.uniroma3.siw.moviefestival.model.Film;
 import it.uniroma3.siw.moviefestival.model.Regista;
+import it.uniroma3.siw.moviefestival.model.Ruolo;
 import it.uniroma3.siw.moviefestival.model.Sala;
+import it.uniroma3.siw.moviefestival.model.Utente;
 import it.uniroma3.siw.moviefestival.repository.FestivalRepository;
 import it.uniroma3.siw.moviefestival.repository.FilmRepository;
 import it.uniroma3.siw.moviefestival.repository.RegistaRepository;
 import it.uniroma3.siw.moviefestival.repository.SalaRepository;
+import it.uniroma3.siw.moviefestival.repository.UtenteRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -20,15 +23,18 @@ public class DataInitializer implements CommandLineRunner {
     private final FilmRepository filmRepository;
     private final FestivalRepository festivalRepository;
     private final SalaRepository salaRepository;
+    private final UtenteRepository utenteRepository;
 
     public DataInitializer(RegistaRepository registaRepository,
                             FilmRepository filmRepository,
                             FestivalRepository festivalRepository,
-                            SalaRepository salaRepository) {
+                            SalaRepository salaRepository,
+                            UtenteRepository utenteRepository) {
         this.registaRepository = registaRepository;
         this.filmRepository = filmRepository;
         this.festivalRepository = festivalRepository;
         this.salaRepository = salaRepository;
+        this.utenteRepository = utenteRepository;
     }
 
     @Override
@@ -82,12 +88,10 @@ public class DataInitializer implements CommandLineRunner {
         venezia.setDataFine(LocalDate.of(2026, 9, 11));
         venezia.setDescrizione("Uno dei festival cinematografici più antichi al mondo.");
 
-        // Collega i film al festival (relazione molti-a-molti)
         venezia.getFilm().add(inception);
         venezia.getFilm().add(parasite);
         festivalRepository.save(venezia);
 
-        // Aggiorna anche il lato inverso della relazione in memoria
         inception.getFestival().add(venezia);
         parasite.getFestival().add(venezia);
         filmRepository.save(inception);
@@ -99,6 +103,13 @@ public class DataInitializer implements CommandLineRunner {
         sala1.setIndirizzo("Lungomare Marconi, Venezia");
         sala1.setCapienza(1000);
         salaRepository.save(sala1);
+
+        // Utente amministratore di test
+        Utente admin = new Utente();
+        admin.setUsername("admin");
+        admin.setPassword(new BCryptPasswordEncoder().encode("admin123"));
+        admin.setRuolo(Ruolo.ADMIN);
+        utenteRepository.save(admin);
 
         System.out.println(">>> Dati di prova inseriti correttamente.");
     }

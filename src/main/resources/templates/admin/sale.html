@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Sale</title>
+</head>
+<body>
+    <h1>Gestione Sale</h1>
+
+    <a th:href="@{/admin/sale/nuova}">+ Nuova sala</a>
+
+    <ul>
+        <li th:each="sala : ${sale}">
+            <span th:text="${sala.nome} + ' (' + ${sala.capienza} + ' posti)'">Nome (capienza)</span>
+            <a th:href="@{/admin/sale/{id}/modifica(id=${sala.id})}">Modifica</a>
+            <form th:action="@{/admin/sale/{id}/elimina(id=${sala.id})}" method="post" style="display:inline;">
+                <button type="submit">Elimina</button>
+            </form>
+        </li>
+    </ul>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>
