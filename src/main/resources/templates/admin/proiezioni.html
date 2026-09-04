@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Proiezioni</title>
+</head>
+<body>
+    <h1>Gestione Proiezioni</h1>
+
+    <a th:href="@{/admin/proiezioni/nuova}">+ Nuova proiezione</a>
+
+    <ul>
+        <li th:each="proiezione : ${proiezioniList}">
+            <span th:text="${proiezione.film.titolo} + ' - ' + ${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome} + ' [' + ${proiezione.stato} + ']'">
+                Dettagli proiezione
+            </span>
+
+            <form th:if="${proiezione.stato.name() == 'SCHEDULED'}"
+                  th:action="@{/admin/proiezioni/{id}/completa(id=${proiezione.id})}" method="post" style="display:inline;">
+                <button type="submit">Segna come completata</button>
+            </form>
+
+            <form th:action="@{/admin/proiezioni/{id}/elimina(id=${proiezione.id})}" method="post" style="display:inline;">
+                <button type="submit">Elimina</button>
+            </form>
+        </li>
+    </ul>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>

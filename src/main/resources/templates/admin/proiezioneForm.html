@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuova Proiezione</title>
+</head>
+<body>
+    <h1>Programma una nuova proiezione</h1>
+
+    <p th:if="${errore != null}" th:text="${errore}" style="color: red;">Messaggio di errore</p>
+
+    <form th:action="@{/admin/proiezioni}" method="post">
+
+        <label>Festival:
+            <select name="festivalId">
+                <option th:each="festival : ${festivalDisponibili}"
+                        th:value="${festival.id}"
+                        th:text="${festival.nome}">Nome Festival</option>
+            </select>
+        </label><br>
+
+        <label>Film:
+            <select name="filmId">
+                <option th:each="film : ${filmDisponibili}"
+                        th:value="${film.id}"
+                        th:text="${film.titolo}">Titolo Film</option>
+            </select>
+        </label><br>
+
+        <label>Sala:
+            <select name="salaId">
+                <option th:each="sala : ${saleDisponibili}"
+                        th:value="${sala.id}"
+                        th:text="${sala.nome}">Nome Sala</option>
+            </select>
+        </label><br>
+
+        <label>Data: <input type="date" name="data"></label><br>
+        <label>Ora: <input type="time" name="ora"></label><br>
+
+        <button type="submit">Programma proiezione</button>
+    </form>
+
+    <p><a th:href="@{/admin/proiezioni}">Annulla</a></p>
+</body>
+</html>
