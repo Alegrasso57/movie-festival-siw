@@ -39,9 +39,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
+
             .authorizeHttpRequests(authorize -> authorize
 
-                // Rotte pubbliche GET (sezione 4.1: funzionalità pubbliche)
                 .requestMatchers(HttpMethod.GET,
                         "/", "/index",
                         "/css/**", "/js/**", "/images/**", "/webjars/**",
@@ -52,18 +53,14 @@ public class SecurityConfig {
                         "/register", "/login", "/error")
                 .permitAll()
 
-                // Registrazione e login pubblici anche in POST
                 .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
 
-                // Operazioni REST protette (creazione, modifica, cancellazione recensioni)
                 .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/**").authenticated()
 
-                // Funzionalità riservate all'amministratore (sezione 4.3)
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
 
-                // Tutto il resto richiede autenticazione
                 .anyRequest().authenticated())
 
             .formLogin(form -> form
