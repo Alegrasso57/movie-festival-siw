@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,12 @@ public class Film {
         inverseJoinColumns = @JoinColumn(name = "festival_id")
     )
     private List<Festival> festival = new ArrayList<>();
+
+    @OneToMany(mappedBy = "film")
+    private List<Proiezione> proiezioni = new ArrayList<>();
+
+    @OneToMany(mappedBy = "film")
+    private List<Recensione> recensioni = new ArrayList<>();
 
     // Costruttore vuoto, richiesto da JPA/Hibernate
     public Film() {
@@ -102,5 +109,21 @@ public class Film {
 
     public void setFestival(List<Festival> festival) {
         this.festival = festival;
+    }
+
+    public List<Proiezione> getProiezioni() {
+        return proiezioni;
+    }
+
+    public void setProiezioni(List<Proiezione> proiezioni) {
+        this.proiezioni = proiezioni;
+    }
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
     }
 }
