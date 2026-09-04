@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${film.titolo}">Dettaglio Film</title>
+</head>
+<body>
+    <h1 th:text="${film.titolo}">Titolo</h1>
+    <p th:text="'Anno: ' + ${film.anno}">Anno</p>
+    <p th:text="'Durata: ' + ${film.durata} + ' minuti'">Durata</p>
+    <p th:text="'Genere: ' + ${film.genere}">Genere</p>
+    <p th:text="'Paese di produzione: ' + ${film.paeseProduzione}">Paese</p>
+
+    <h2>Regista</h2>
+    <p th:if="${film.regista != null}"
+       th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</p>
+
+    <h2>Festival a cui partecipa</h2>
+    <ul>
+        <li th:each="festival : ${film.festival}" th:text="${festival.nome}">Nome Festival</li>
+    </ul>
+
+    <h2>Proiezioni</h2>
+    <ul>
+        <li th:each="proiezione : ${film.proiezioni}"
+            th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}">
+            Data Ora - Sala
+        </li>
+    </ul>
+
+    <h2>Recensioni</h2>
+    <div th:each="recensione : ${recensioni}">
+        <p th:text="'Voto: ' + ${recensione.voto} + '/10'">Voto</p>
+        <p th:text="${recensione.testo}">Testo recensione</p>
+        <p th:text="'di ' + ${recensione.utente.username} + ' il ' + ${recensione.data}">Autore e data</p>
+        <hr>
+    </div>
+
+    <p><a th:href="@{/movies}">Torna all'elenco film</a></p>
+</body>
+</html>

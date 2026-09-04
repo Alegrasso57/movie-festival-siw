@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Elenco Film</title>
+</head>
+<body>
+    <h1>Film</h1>
+
+    <div th:each="film : ${films}">
+        <h2>
+            <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo</a>
+        </h2>
+        <p th:text="${film.genere} + ' - ' + ${film.anno}">Genere - Anno</p>
+    </div>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>

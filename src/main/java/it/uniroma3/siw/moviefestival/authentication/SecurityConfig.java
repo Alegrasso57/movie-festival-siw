@@ -47,6 +47,7 @@ public class SecurityConfig {
                         "/css/**", "/js/**", "/images/**", "/webjars/**",
                         "/festivals", "/festival/**",
                         "/movies", "/movie/**",
+                        "/screenings",
                         "/api/festivals/**", "/api/movies/**",
                         "/register", "/login", "/error")
                 .permitAll()

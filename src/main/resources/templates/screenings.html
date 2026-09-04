@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Programma Proiezioni</title>
+</head>
+<body>
+    <h1>Programma delle proiezioni</h1>
+
+    <div th:each="proiezione : ${proiezioni}">
+        <p>
+            <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
+            —
+            <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora}">Data e ora</span>
+            —
+            <span th:text="${proiezione.sala.nome}">Sala</span>
+            —
+            <span th:text="${proiezione.stato}">Stato</span>
+            —
+            <a th:href="@{/festival/{id}(id=${proiezione.festival.id})}" th:text="${proiezione.festival.nome}">Festival</a>
+        </p>
+    </div>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>
