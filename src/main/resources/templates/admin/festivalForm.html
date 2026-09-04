@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Festival</title>
+</head>
+<body>
+    <h1>Festival</h1>
+
+    <form th:action="@{/admin/festival}" method="post">
+        <input type="hidden" name="id" th:value="${festival.id}">
+
+        <label>Nome: <input type="text" name="nome" th:value="${festival.nome}"></label><br>
+        <label>Anno: <input type="number" name="anno" th:value="${festival.anno}"></label><br>
+        <label>Città: <input type="text" name="citta" th:value="${festival.citta}"></label><br>
+        <label>Data inizio: <input type="date" name="dataInizio" th:value="${festival.dataInizio}"></label><br>
+        <label>Data fine: <input type="date" name="dataFine" th:value="${festival.dataFine}"></label><br>
+        <label>Descrizione: <textarea name="descrizione" th:text="${festival.descrizione}"></textarea></label><br>
+
+        <label>Film partecipanti:<br>
+            <select name="filmIds" multiple size="5">
+                <option th:each="film : ${filmDisponibili}"
+                        th:value="${film.id}"
+                        th:text="${film.titolo}"
+                        th:selected="${festival.film != null and festival.film.contains(film)}">
+                    Titolo film
+                </option>
+            </select>
+        </label><br>
+        <small>Tieni premuto Ctrl (o Cmd su Mac) per selezionare più film contemporaneamente.</small><br>
+
+        <button type="submit">Salva</button>
+    </form>
+
+    <p><a th:href="@{/admin/festival}">Annulla</a></p>
+</body>
+</html>

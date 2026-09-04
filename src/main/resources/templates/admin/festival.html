@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Festival</title>
+</head>
+<body>
+    <h1>Gestione Festival</h1>
+
+    <a th:href="@{/admin/festival/nuovo}">+ Nuovo festival</a>
+
+    <ul>
+        <li th:each="festival : ${festivalList}">
+            <span th:text="${festival.nome} + ' (' + ${festival.anno} + ')'">Nome (Anno)</span>
+            <a th:href="@{/admin/festival/{id}/modifica(id=${festival.id})}">Modifica</a>
+            <form th:action="@{/admin/festival/{id}/elimina(id=${festival.id})}" method="post" style="display:inline;">
+                <button type="submit">Elimina</button>
+            </form>
+        </li>
+    </ul>
+
+    <p><a th:href="@{/}">Torna alla home</a></p>
+</body>
+</html>
