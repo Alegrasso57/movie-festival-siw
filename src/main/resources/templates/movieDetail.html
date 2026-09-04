@@ -33,7 +33,26 @@
         <p th:text="'Voto: ' + ${recensione.voto} + '/10'">Voto</p>
         <p th:text="${recensione.testo}">Testo recensione</p>
         <p th:text="'di ' + ${recensione.utente.username} + ' il ' + ${recensione.data}">Autore e data</p>
+
+        <span th:if="${username != null and recensione.utente.username == username}">
+            <a th:href="@{/recensione/{id}/modifica(id=${recensione.id})}">Modifica</a>
+            <form th:action="@{/recensione/{id}/elimina(id=${recensione.id})}" method="post" style="display:inline;">
+                <button type="submit">Elimina</button>
+            </form>
+        </span>
         <hr>
+    </div>
+
+    <div th:if="${username != null}">
+        <h3>Scrivi una recensione</h3>
+        <form th:action="@{/movie/{id}/recensioni(id=${film.id})}" method="post">
+            <label>Voto (1-10): <input type="number" name="voto" min="1" max="10"></label><br>
+            <label>Testo: <textarea name="testo"></textarea></label><br>
+            <button type="submit">Invia recensione</button>
+        </form>
+    </div>
+    <div th:if="${username == null}">
+        <p><a th:href="@{/login}">Accedi</a> per lasciare una recensione.</p>
     </div>
 
     <p><a th:href="@{/movies}">Torna all'elenco film</a></p>

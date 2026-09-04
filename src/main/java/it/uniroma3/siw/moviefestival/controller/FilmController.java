@@ -1,5 +1,6 @@
 package it.uniroma3.siw.moviefestival.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +27,21 @@ public class FilmController {
     }
 
     @GetMapping("/movie/{id}")
-    public String dettaglioFilm(@PathVariable("id") Long id, Model model) {
+    public String dettaglioFilm(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Film film = filmService.findById(id);
         if (film == null) {
             return "redirect:/movies";
         }
         model.addAttribute("film", film);
         model.addAttribute("recensioni", recensioneService.findByFilm(id));
+
+        if (authentication != null && authentication.isAuthenticated()
+                && !"anonymousUser".equals(authentication.getName())) {
+            model.addAttribute("username", authentication.getName());
+        } else {
+            model.addAttribute("username", null);
+        }
+
         return "movieDetail";
     }
 }

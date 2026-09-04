@@ -12,7 +12,9 @@
 
     <h2>Film partecipanti</h2>
     <ul>
-        <li th:each="film : ${festival.film}" th:text="${film.titolo}">Titolo film</li>
+        <li th:each="film : ${festival.film}">
+            <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo film</a>
+        </li>
     </ul>
 
     <p><a th:href="@{/festivals}">Torna all'elenco</a></p>

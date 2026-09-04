@@ -6,8 +6,12 @@
 </head>
 <body>
     <h1>Benvenuto su Movie Festival</h1>
-    <p>
-        <a th:href="@{/festivals}">Vai all'elenco dei festival</a>
-    </p>
+    <ul>
+        <li><a th:href="@{/festivals}">Elenco festival</a></li>
+        <li><a th:href="@{/movies}">Elenco film</a></li>
+        <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
+        <li><a th:href="@{/login}">Accedi</a></li>
+        <li><a th:href="@{/register}">Registrati</a></li>
+    </ul>
 </body>
 </html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Recensione</title>
+</head>
+<body>
+    <h1>Modifica la tua recensione</h1>
+
+    <form th:action="@{/recensione/{id}/modifica(id=${recensione.id})}" method="post">
+        <label>Voto (1-10):
+            <input type="number" name="voto" min="1" max="10" th:value="${recensione.voto}">
+        </label><br>
+        <label>Testo:
+            <textarea name="testo" th:text="${recensione.testo}"></textarea>
+        </label><br>
+        <button type="submit">Salva modifiche</button>
+    </form>
+
+    <p><a th:href="@{/movie/{id}(id=${recensione.film.id})}">Annulla</a></p>
+</body>
+</html>
