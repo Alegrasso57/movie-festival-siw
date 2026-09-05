@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Movie Festival</title>
@@ -10,8 +10,17 @@
         <li><a th:href="@{/festivals}">Elenco festival</a></li>
         <li><a th:href="@{/movies}">Elenco film</a></li>
         <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
-        <li><a th:href="@{/login}">Accedi</a></li>
-        <li><a th:href="@{/register}">Registrati</a></li>
     </ul>
+
+    <div sec:authorize="!isAuthenticated()">
+        <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a></p>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <p>Sei connessa come <span sec:authentication="name">username</span>.</p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Esci (logout)</button>
+        </form>
+    </div>
 </body>
 </html>
