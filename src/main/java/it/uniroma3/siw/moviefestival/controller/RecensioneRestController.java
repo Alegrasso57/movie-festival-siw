@@ -42,7 +42,7 @@ public class RecensioneRestController {
             Recensione recensione = recensioneService.creaRecensione(filmId, utente.getId(), testo, voto);
             return ResponseEntity.ok(new RecensioneDTO(recensione));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(Map.of("errore", e.getMessage()));
         } catch (IllegalStateException e) {
             return ResponseEntity.status(409).body(Map.of("errore", e.getMessage()));
         }
@@ -67,7 +67,7 @@ public class RecensioneRestController {
             }
             return ResponseEntity.ok(new RecensioneDTO(recensioneService.findById(id)));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(Map.of("errore", e.getMessage()));
         }
     }
 
@@ -86,7 +86,7 @@ public class RecensioneRestController {
             }
             return ResponseEntity.ok(Map.of("messaggio", "Recensione eliminata"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(Map.of("errore", e.getMessage()));
         }
     }
 }

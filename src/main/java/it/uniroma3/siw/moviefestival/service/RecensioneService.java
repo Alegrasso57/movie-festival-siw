@@ -40,12 +40,19 @@ public class RecensioneService {
         return recensioneRepository.findById(id).orElse(null);
     }
 
-    /**
-     * Crea una nuova recensione, verificando che l'utente non ne abbia
-     * già inserita una per lo stesso film.
-     */
+    private void validaTestoEVoto(String testo, Integer voto) {
+        if (testo == null || testo.isBlank()) {
+            throw new IllegalArgumentException("Il testo della recensione è obbligatorio");
+        }
+        if (voto == null || voto < 1 || voto > 10) {
+            throw new IllegalArgumentException("Il voto deve essere compreso tra 1 e 10");
+        }
+    }
+
     @Transactional
     public Recensione creaRecensione(Long filmId, Long utenteId, String testo, Integer voto) {
+
+        validaTestoEVoto(testo, voto);
 
         Film film = filmRepository.findById(filmId).orElse(null);
         if (film == null) {
@@ -72,12 +79,10 @@ public class RecensioneService {
         return recensioneRepository.save(recensione);
     }
 
-    /**
-     * Modifica una recensione esistente, solo se l'utente indicato ne è l'autore.
-     * Restituisce true se la modifica è avvenuta, false se l'utente non è autorizzato.
-     */
     @Transactional
     public boolean modificaRecensione(Long recensioneId, Long utenteId, String nuovoTesto, Integer nuovoVoto) {
+
+        validaTestoEVoto(nuovoTesto, nuovoVoto);
 
         Recensione recensione = recensioneRepository.findById(recensioneId).orElse(null);
         if (recensione == null) {
@@ -94,10 +99,6 @@ public class RecensioneService {
         return true;
     }
 
-    /**
-     * Elimina una recensione, solo se l'utente indicato ne è l'autore.
-     * Restituisce true se l'eliminazione è avvenuta, false se l'utente non è autorizzato.
-     */
     @Transactional
     public boolean eliminaRecensione(Long recensioneId, Long utenteId) {
 

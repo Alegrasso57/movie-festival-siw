@@ -1,8 +1,9 @@
 package it.uniroma3.siw.moviefestival.controller;
 
-import java.time.LocalDate;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class RegistaAdminController {
     @GetMapping("/admin/registi/nuovo")
     public String formNuovo(Model model) {
         model.addAttribute("regista", new Regista());
+        model.addAttribute("erroreValidazione", false);
         return "admin/registaForm";
     }
 
@@ -38,27 +40,31 @@ public class RegistaAdminController {
             return "redirect:/admin/registi";
         }
         model.addAttribute("regista", regista);
+        model.addAttribute("erroreValidazione", false);
         return "admin/registaForm";
     }
 
     @PostMapping("/admin/registi")
-    public String salva(@ModelAttribute("id") Long id,
-                         @ModelAttribute("nome") String nome,
-                         @ModelAttribute("cognome") String cognome,
-                         @ModelAttribute("dataNascita") String dataNascita,
-                         @ModelAttribute("nazionalita") String nazionalita) {
+    public String salva(@Valid @ModelAttribute("regista") Regista registaForm,
+                         BindingResult bindingResult,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("erroreValidazione", true);
+            return "admin/registaForm";
+        }
 
         Regista regista;
-        if (id != null) {
-            regista = registaService.findById(id);
+        if (registaForm.getId() != null) {
+            regista = registaService.findById(registaForm.getId());
         } else {
             regista = new Regista();
         }
 
-        regista.setNome(nome);
-        regista.setCognome(cognome);
-        regista.setDataNascita(LocalDate.parse(dataNascita));
-        regista.setNazionalita(nazionalita);
+        regista.setNome(registaForm.getNome());
+        regista.setCognome(registaForm.getCognome());
+        regista.setDataNascita(registaForm.getDataNascita());
+        regista.setNazionalita(registaForm.getNazionalita());
 
         registaService.save(regista);
         return "redirect:/admin/registi";

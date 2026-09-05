@@ -43,14 +43,16 @@ public class ProiezioneService {
         return proiezioneRepository.findById(id).orElse(null);
     }
 
-    /**
-     * Programma una nuova proiezione, coordinando Festival, Film e Sala.
-     * Verifica che la sala non sia già occupata nello stesso giorno e ora.
-     * Operazione atomica: se la verifica fallisce, nulla viene salvato.
-     */
     @Transactional
     public Proiezione creaProiezione(Long festivalId, Long filmId, Long salaId,
                                       LocalDate data, LocalTime ora) {
+
+        if (data == null) {
+            throw new IllegalArgumentException("La data è obbligatoria");
+        }
+        if (ora == null) {
+            throw new IllegalArgumentException("L'ora è obbligatoria");
+        }
 
         Festival festival = festivalRepository.findById(festivalId).orElse(null);
         if (festival == null) {

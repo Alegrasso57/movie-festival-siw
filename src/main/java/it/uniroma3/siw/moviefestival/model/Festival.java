@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +19,21 @@ public class Festival {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Il nome è obbligatorio")
     private String nome;
+
+    @NotNull(message = "L'anno è obbligatorio")
     private Integer anno;
+
+    @NotBlank(message = "La città è obbligatoria")
     private String citta;
+
+    @NotNull(message = "La data di inizio è obbligatoria")
     private LocalDate dataInizio;
+
+    @NotNull(message = "La data di fine è obbligatoria")
     private LocalDate dataFine;
+
     private String descrizione;
 
     @ManyToMany(mappedBy = "festival")
@@ -30,11 +42,9 @@ public class Festival {
     @OneToMany(mappedBy = "festival")
     private List<Proiezione> proiezioni = new ArrayList<>();
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Festival() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

@@ -5,6 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +19,25 @@ public class Regista {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Il nome è obbligatorio")
     private String nome;
+
+    @NotBlank(message = "Il cognome è obbligatorio")
     private String cognome;
+
+    @NotNull(message = "La data di nascita è obbligatoria")
+    @Past(message = "La data di nascita deve essere nel passato")
     private LocalDate dataNascita;
+
+    @NotBlank(message = "La nazionalità è obbligatoria")
     private String nazionalita;
 
     @OneToMany(mappedBy = "regista")
     private List<Film> film = new ArrayList<>();
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Regista() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

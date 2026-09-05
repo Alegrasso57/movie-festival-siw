@@ -7,6 +7,10 @@
 <body>
     <h1>Sala</h1>
 
+    <p style="color: red;" th:if="${erroreValidazione}">
+        Controlla i campi obbligatori: tutti i valori devono essere validi.
+    </p>
+
     <form th:action="@{/admin/sale}" method="post">
         <input type="hidden" name="id" th:value="${sala.id}">
 

@@ -1,14 +1,16 @@
 package it.uniroma3.siw.moviefestival.controller;
 
-import java.time.LocalDate;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import it.uniroma3.siw.moviefestival.model.Festival;
 import it.uniroma3.siw.moviefestival.model.Film;
 import it.uniroma3.siw.moviefestival.service.FestivalService;
@@ -35,6 +37,7 @@ public class FestivalAdminController {
     public String formNuovo(Model model) {
         model.addAttribute("festival", new Festival());
         model.addAttribute("filmDisponibili", filmService.findAll());
+        model.addAttribute("erroreValidazione", false);
         return "admin/festivalForm";
     }
 
@@ -46,32 +49,35 @@ public class FestivalAdminController {
         }
         model.addAttribute("festival", festival);
         model.addAttribute("filmDisponibili", filmService.findAll());
+        model.addAttribute("erroreValidazione", false);
         return "admin/festivalForm";
     }
 
     @PostMapping("/admin/festival")
-    public String salva(@ModelAttribute("id") Long id,
-                         @ModelAttribute("nome") String nome,
-                         @ModelAttribute("anno") Integer anno,
-                         @ModelAttribute("citta") String citta,
-                         @ModelAttribute("dataInizio") String dataInizio,
-                         @ModelAttribute("dataFine") String dataFine,
-                         @ModelAttribute("descrizione") String descrizione,
-                         @ModelAttribute("filmIds") List<Long> filmIds) {
+    public String salva(@Valid @ModelAttribute("festival") Festival festivalForm,
+                         BindingResult bindingResult,
+                         @RequestParam(value = "filmIds", required = false) List<Long> filmIds,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("filmDisponibili", filmService.findAll());
+            model.addAttribute("erroreValidazione", true);
+            return "admin/festivalForm";
+        }
 
         Festival festival;
-        if (id != null) {
-            festival = festivalService.findById(id);
+        if (festivalForm.getId() != null) {
+            festival = festivalService.findById(festivalForm.getId());
         } else {
             festival = new Festival();
         }
 
-        festival.setNome(nome);
-        festival.setAnno(anno);
-        festival.setCitta(citta);
-        festival.setDataInizio(LocalDate.parse(dataInizio));
-        festival.setDataFine(LocalDate.parse(dataFine));
-        festival.setDescrizione(descrizione);
+        festival.setNome(festivalForm.getNome());
+        festival.setAnno(festivalForm.getAnno());
+        festival.setCitta(festivalForm.getCitta());
+        festival.setDataInizio(festivalForm.getDataInizio());
+        festival.setDataFine(festivalForm.getDataFine());
+        festival.setDescrizione(festivalForm.getDescrizione());
 
         List<Film> filmSelezionati = new ArrayList<>();
         if (filmIds != null) {

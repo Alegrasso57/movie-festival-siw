@@ -23,27 +23,27 @@ public class RecensioneController {
         this.utenteService = utenteService;
     }
 
-    @PostMapping("/movie/{id}/recensioni")
-    public String creaRecensione(@PathVariable("id") Long filmId,
-                                  @ModelAttribute("testo") String testo,
-                                  @ModelAttribute("voto") Integer voto,
-                                  Authentication authentication,
-                                  Model model) {
+   @PostMapping("/movie/{id}/recensioni")
+public String creaRecensione(@PathVariable("id") Long filmId,
+                              @ModelAttribute("testo") String testo,
+                              @ModelAttribute("voto") Integer voto,
+                              Authentication authentication,
+                              Model model) {
 
-        Utente utente = utenteService.findByUsername(authentication.getName());
-        if (utente == null) {
-            return "redirect:/login";
-        }
-
-        try {
-            recensioneService.creaRecensione(filmId, utente.getId(), testo, voto);
-        } catch (IllegalStateException e) {
-            // L'utente ha già recensito questo film: ignoriamo silenziosamente per ora
-        }
-
-        return "redirect:/movie/" + filmId;
+    Utente utente = utenteService.findByUsername(authentication.getName());
+    if (utente == null) {
+        return "redirect:/login";
     }
 
+    try {
+        recensioneService.creaRecensione(filmId, utente.getId(), testo, voto);
+    } catch (IllegalStateException | IllegalArgumentException e) {
+        // Errore di validazione o recensione duplicata: per ora ignoriamo silenziosamente,
+        // dato che la validazione HTML lato client (min/max sull'input) copre già i casi comuni
+    }
+
+    return "redirect:/movie/" + filmId;
+}
     @GetMapping("/recensione/{id}/modifica")
     public String mostraFormModifica(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Recensione recensione = recensioneService.findById(id);

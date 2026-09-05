@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,7 +18,10 @@ public class Proiezione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull(message = "La data è obbligatoria")
     private LocalDate data;
+
+    @NotNull(message = "L'ora è obbligatoria")
     private LocalTime ora;
 
     @Enumerated(EnumType.STRING)
@@ -32,11 +36,9 @@ public class Proiezione {
     @ManyToOne
     private Sala sala;
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Proiezione() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

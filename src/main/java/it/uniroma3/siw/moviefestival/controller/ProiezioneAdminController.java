@@ -54,9 +54,22 @@ public class ProiezioneAdminController {
                          @ModelAttribute("ora") String ora,
                          Model model) {
 
+        if (data == null || data.isBlank()) {
+            caricaListeSelezione(model);
+            model.addAttribute("errore", "La data è obbligatoria");
+            return "admin/proiezioneForm";
+        }
+        if (ora == null || ora.isBlank()) {
+            caricaListeSelezione(model);
+            model.addAttribute("errore", "L'ora è obbligatoria");
+            return "admin/proiezioneForm";
+        }
+
         try {
-            proiezioneService.creaProiezione(festivalId, filmId, salaId,
-                    LocalDate.parse(data), LocalTime.parse(ora));
+            LocalDate dataParsata = LocalDate.parse(data);
+            LocalTime oraParsata = LocalTime.parse(ora);
+
+            proiezioneService.creaProiezione(festivalId, filmId, salaId, dataParsata, oraParsata);
             return "redirect:/admin/proiezioni";
 
         } catch (IllegalArgumentException | IllegalStateException e) {

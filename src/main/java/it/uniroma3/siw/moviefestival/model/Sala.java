@@ -5,6 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,18 +18,22 @@ public class Sala {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Il nome è obbligatorio")
     private String nome;
+
+    @NotBlank(message = "L'indirizzo è obbligatorio")
     private String indirizzo;
+
+    @NotNull(message = "La capienza è obbligatoria")
+    @Positive(message = "La capienza deve essere maggiore di zero")
     private Integer capienza;
 
     @OneToMany(mappedBy = "sala")
     private List<Proiezione> proiezioni = new ArrayList<>();
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Sala() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

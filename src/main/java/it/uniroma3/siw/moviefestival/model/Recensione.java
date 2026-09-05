@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -17,8 +21,14 @@ public class Recensione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Il testo della recensione è obbligatorio")
     private String testo;
+
+    @NotNull(message = "Il voto è obbligatorio")
+    @Min(value = 1, message = "Il voto minimo è 1")
+    @Max(value = 10, message = "Il voto massimo è 10")
     private Integer voto;
+
     private LocalDate data;
 
     @ManyToOne
@@ -27,11 +37,9 @@ public class Recensione {
     @ManyToOne
     private Utente utente;
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Recensione() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

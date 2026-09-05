@@ -1,7 +1,9 @@
 package it.uniroma3.siw.moviefestival.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ public class SalaAdminController {
     @GetMapping("/admin/sale/nuova")
     public String formNuova(Model model) {
         model.addAttribute("sala", new Sala());
+        model.addAttribute("erroreValidazione", false);
         return "admin/salaForm";
     }
 
@@ -37,25 +40,30 @@ public class SalaAdminController {
             return "redirect:/admin/sale";
         }
         model.addAttribute("sala", sala);
+        model.addAttribute("erroreValidazione", false);
         return "admin/salaForm";
     }
 
     @PostMapping("/admin/sale")
-    public String salva(@ModelAttribute("id") Long id,
-                         @ModelAttribute("nome") String nome,
-                         @ModelAttribute("indirizzo") String indirizzo,
-                         @ModelAttribute("capienza") Integer capienza) {
+    public String salva(@Valid @ModelAttribute("sala") Sala salaForm,
+                         BindingResult bindingResult,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("erroreValidazione", true);
+            return "admin/salaForm";
+        }
 
         Sala sala;
-        if (id != null) {
-            sala = salaService.findById(id);
+        if (salaForm.getId() != null) {
+            sala = salaService.findById(salaForm.getId());
         } else {
             sala = new Sala();
         }
 
-        sala.setNome(nome);
-        sala.setIndirizzo(indirizzo);
-        sala.setCapienza(capienza);
+        sala.setNome(salaForm.getNome());
+        sala.setIndirizzo(salaForm.getIndirizzo());
+        sala.setCapienza(salaForm.getCapienza());
 
         salaService.save(sala);
         return "redirect:/admin/sale";

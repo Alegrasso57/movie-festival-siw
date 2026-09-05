@@ -7,6 +7,10 @@
 <body>
     <h1>Festival</h1>
 
+    <p style="color: red;" th:if="${erroreValidazione}">
+        Controlla i campi obbligatori: tutti i valori devono essere validi.
+    </p>
+
     <form th:action="@{/admin/festival}" method="post">
         <input type="hidden" name="id" th:value="${festival.id}">
 
