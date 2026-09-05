@@ -9,6 +9,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +23,21 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Il titolo è obbligatorio")
     private String titolo;
+
+    @NotNull(message = "L'anno è obbligatorio")
+    @Min(value = 1888, message = "L'anno non può essere precedente al 1888 (nascita del cinema)")
     private Integer anno;
+
+    @NotNull(message = "La durata è obbligatoria")
+    @Positive(message = "La durata deve essere maggiore di zero")
     private Integer durata;
+
+    @NotBlank(message = "Il genere è obbligatorio")
     private String genere;
+
+    @NotBlank(message = "Il paese di produzione è obbligatorio")
     private String paeseProduzione;
 
     @ManyToOne
@@ -42,11 +57,9 @@ public class Film {
     @OneToMany(mappedBy = "film")
     private List<Recensione> recensioni = new ArrayList<>();
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Film() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

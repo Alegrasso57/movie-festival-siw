@@ -1,7 +1,9 @@
 package it.uniroma3.siw.moviefestival.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,7 @@ public class FilmAdminController {
     public String formNuovo(Model model) {
         model.addAttribute("film", new Film());
         model.addAttribute("registi", registaService.findAll());
+        model.addAttribute("erroreValidazione", false);
         return "admin/filmForm";
     }
 
@@ -43,30 +46,35 @@ public class FilmAdminController {
         }
         model.addAttribute("film", film);
         model.addAttribute("registi", registaService.findAll());
+        model.addAttribute("erroreValidazione", false);
         return "admin/filmForm";
     }
 
     @PostMapping("/admin/film")
-    public String salva(@ModelAttribute("id") Long id,
-                         @ModelAttribute("titolo") String titolo,
-                         @ModelAttribute("anno") Integer anno,
-                         @ModelAttribute("durata") Integer durata,
-                         @ModelAttribute("genere") String genere,
-                         @ModelAttribute("paeseProduzione") String paeseProduzione,
-                         @ModelAttribute("registaId") Long registaId) {
+    public String salva(@Valid @ModelAttribute Film filmForm,
+                         BindingResult bindingResult,
+                         @ModelAttribute("registaId") Long registaId,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("registi", registaService.findAll());
+            model.addAttribute("film", filmForm);
+            model.addAttribute("erroreValidazione", true);
+            return "admin/filmForm";
+        }
 
         Film film;
-        if (id != null) {
-            film = filmService.findById(id);
+        if (filmForm.getId() != null) {
+            film = filmService.findById(filmForm.getId());
         } else {
             film = new Film();
         }
 
-        film.setTitolo(titolo);
-        film.setAnno(anno);
-        film.setDurata(durata);
-        film.setGenere(genere);
-        film.setPaeseProduzione(paeseProduzione);
+        film.setTitolo(filmForm.getTitolo());
+        film.setAnno(filmForm.getAnno());
+        film.setDurata(filmForm.getDurata());
+        film.setGenere(filmForm.getGenere());
+        film.setPaeseProduzione(filmForm.getPaeseProduzione());
 
         Regista regista = registaService.findById(registaId);
         film.setRegista(regista);
