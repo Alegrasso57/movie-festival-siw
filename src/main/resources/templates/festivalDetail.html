@@ -2,21 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title th:text="${festival.nome}">Dettaglio Festival</title>
 </head>
 <body>
-    <h1 th:text="${festival.nome}">Nome Festival</h1>
-    <p th:text="'Città: ' + ${festival.citta}">Città</p>
-    <p th:text="'Anno: ' + ${festival.anno}">Anno</p>
-    <p th:text="${festival.descrizione}">Descrizione</p>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+    </nav>
 
-    <h2>Film partecipanti</h2>
-    <ul>
-        <li th:each="film : ${festival.film}">
+    <div class="container">
+        <h1 th:text="${festival.nome}">Nome Festival</h1>
+        <p th:text="'Città: ' + ${festival.citta}">Città</p>
+        <p th:text="'Anno: ' + ${festival.anno}">Anno</p>
+        <p th:text="${festival.descrizione}">Descrizione</p>
+
+        <h2>Film partecipanti</h2>
+        <div class="card" th:each="film : ${festival.film}">
             <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo film</a>
-        </li>
-    </ul>
+        </div>
 
-    <p><a th:href="@{/festivals}">Torna all'elenco</a></p>
+        <p><a th:href="@{/festivals}">Torna all'elenco</a></p>
+    </div>
 </body>
 </html>

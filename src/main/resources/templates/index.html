@@ -2,39 +2,50 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Movie Festival</title>
 </head>
 <body>
-    <h1>Benvenuto su Movie Festival</h1>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+    </nav>
 
-    <h2>Esplora</h2>
-    <ul>
-        <li><a th:href="@{/festivals}">Elenco festival</a></li>
-        <li><a th:href="@{/movies}">Elenco film</a></li>
-        <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
-    </ul>
+    <div class="container">
+        <h1>Benvenuto su Movie Festival</h1>
 
-    <div sec:authorize="!isAuthenticated()">
-        <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a> per lasciare recensioni.</p>
-    </div>
-
-    <div sec:authorize="isAuthenticated()">
-        <p>Sei connessa come <span sec:authentication="name">username</span>.</p>
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Esci (logout)</button>
-        </form>
-    </div>
-
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <h2>Area amministratore</h2>
-        <ul>
-            <li><a th:href="@{/admin/registi}">Gestione Registi</a></li>
-            <li><a th:href="@{/admin/sale}">Gestione Sale</a></li>
-            <li><a th:href="@{/admin/film}">Gestione Film</a></li>
-            <li><a th:href="@{/admin/festival}">Gestione Festival</a></li>
-            <li><a th:href="@{/admin/proiezioni}">Gestione Proiezioni</a></li>
-            <li><a th:href="@{/admin/performance}">Analisi prestazioni (fetch)</a></li>
+        <h2>Esplora</h2>
+        <ul class="link-list">
+            <li><a th:href="@{/festivals}">Elenco festival</a></li>
+            <li><a th:href="@{/movies}">Elenco film</a></li>
+            <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
         </ul>
+
+        <div sec:authorize="!isAuthenticated()">
+            <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a> per lasciare recensioni.</p>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <p>Sei connessa come <span sec:authentication="name">username</span>.</p>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Esci (logout)</button>
+            </form>
+        </div>
+
+        <div class="admin-section" sec:authorize="hasAuthority('ADMIN')">
+            <h2>Area amministratore</h2>
+            <ul class="link-list">
+                <li><a th:href="@{/admin/registi}">Gestione Registi</a></li>
+                <li><a th:href="@{/admin/sale}">Gestione Sale</a></li>
+                <li><a th:href="@{/admin/film}">Gestione Film</a></li>
+                <li><a th:href="@{/admin/festival}">Gestione Festival</a></li>
+                <li><a th:href="@{/admin/proiezioni}">Gestione Proiezioni</a></li>
+                <li><a th:href="@{/admin/performance}">Analisi prestazioni (fetch)</a></li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>

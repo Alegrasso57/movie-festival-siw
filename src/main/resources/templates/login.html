@@ -2,20 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Login</title>
 </head>
 <body>
-    <h1>Accedi</h1>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+    </nav>
 
-    <form th:action="@{/login}" method="post">
-        <label>Username: <input type="text" name="username"></label><br>
-        <label>Password: <input type="password" name="password"></label><br>
-        <button type="submit">Accedi</button>
-    </form>
+    <div class="container">
+        <h1>Accedi</h1>
 
-    <p th:if="${param.error}">Username o password errati.</p>
+        <form th:action="@{/login}" method="post">
+            <label>Username: <input type="text" name="username"></label>
+            <label>Password: <input type="password" name="password"></label>
+            <button type="submit">Accedi</button>
+        </form>
 
-    <p><a th:href="@{/register}">Non hai un account? Registrati</a></p>
-    <p><a th:href="@{/}">Torna alla home</a></p>
+        <p th:if="${param.error}" class="errore">Username o password errati.</p>
+
+        <p><a th:href="@{/register}">Non hai un account? Registrati</a></p>
+        <p><a th:href="@{/}">Torna alla home</a></p>
+    </div>
 </body>
 </html>
