@@ -6,6 +6,8 @@
 </head>
 <body>
     <h1>Benvenuto su Movie Festival</h1>
+
+    <h2>Esplora</h2>
     <ul>
         <li><a th:href="@{/festivals}">Elenco festival</a></li>
         <li><a th:href="@{/movies}">Elenco film</a></li>
@@ -13,7 +15,7 @@
     </ul>
 
     <div sec:authorize="!isAuthenticated()">
-        <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a></p>
+        <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a> per lasciare recensioni.</p>
     </div>
 
     <div sec:authorize="isAuthenticated()">
@@ -21,6 +23,18 @@
         <form th:action="@{/logout}" method="post">
             <button type="submit">Esci (logout)</button>
         </form>
+    </div>
+
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <h2>Area amministratore</h2>
+        <ul>
+            <li><a th:href="@{/admin/registi}">Gestione Registi</a></li>
+            <li><a th:href="@{/admin/sale}">Gestione Sale</a></li>
+            <li><a th:href="@{/admin/film}">Gestione Film</a></li>
+            <li><a th:href="@{/admin/festival}">Gestione Festival</a></li>
+            <li><a th:href="@{/admin/proiezioni}">Gestione Proiezioni</a></li>
+            <li><a th:href="@{/admin/performance}">Analisi prestazioni (fetch)</a></li>
+        </ul>
     </div>
 </body>
 </html>
