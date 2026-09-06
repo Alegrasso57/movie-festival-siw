@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Gestione Registi</title>
 </head>
 <body>
+<div class="container">
     <h1>Gestione Registi</h1>
 
     <a th:href="@{/admin/registi/nuovo}">+ Nuovo regista</a>
 
-    <ul>
-        <li th:each="regista : ${registi}">
-            <span th:text="${regista.nome} + ' ' + ${regista.cognome}">Nome Cognome</span>
+    <div class="card" th:each="regista : ${registi}">
+        <span th:text="${regista.nome} + ' ' + ${regista.cognome}">Nome Cognome</span>
+        <div class="actions">
             <a th:href="@{/admin/registi/{id}/modifica(id=${regista.id})}">Modifica</a>
-            <form th:action="@{/admin/registi/{id}/elimina(id=${regista.id})}" method="post" style="display:inline;">
+            <form th:action="@{/admin/registi/{id}/elimina(id=${regista.id})}" method="post">
                 <button type="submit">Elimina</button>
             </form>
-        </li>
-    </ul>
+        </div>
+    </div>
 
     <p><a th:href="@{/}">Torna alla home</a></p>
+</div>
 </body>
 </html>

@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Form Festival</title>
 </head>
 <body>
+<div class="container">
     <h1>Festival</h1>
 
-    <p style="color: red;" th:if="${erroreValidazione}">
+    <p class="errore" th:if="${erroreValidazione}">
         Controlla i campi obbligatori: tutti i valori devono essere validi.
     </p>
 
     <form th:action="@{/admin/festival}" method="post">
         <input type="hidden" name="id" th:value="${festival.id}">
+        <label>Nome: <input type="text" name="nome" th:value="${festival.nome}"></label>
+        <label>Anno: <input type="number" name="anno" th:value="${festival.anno}"></label>
+        <label>Città: <input type="text" name="citta" th:value="${festival.citta}"></label>
+        <label>Data inizio: <input type="date" name="dataInizio" th:value="${festival.dataInizio}"></label>
+        <label>Data fine: <input type="date" name="dataFine" th:value="${festival.dataFine}"></label>
+        <label>Descrizione: <textarea name="descrizione" th:text="${festival.descrizione}"></textarea></label>
 
-        <label>Nome: <input type="text" name="nome" th:value="${festival.nome}"></label><br>
-        <label>Anno: <input type="number" name="anno" th:value="${festival.anno}"></label><br>
-        <label>Città: <input type="text" name="citta" th:value="${festival.citta}"></label><br>
-        <label>Data inizio: <input type="date" name="dataInizio" th:value="${festival.dataInizio}"></label><br>
-        <label>Data fine: <input type="date" name="dataFine" th:value="${festival.dataFine}"></label><br>
-        <label>Descrizione: <textarea name="descrizione" th:text="${festival.descrizione}"></textarea></label><br>
-
-        <label>Film partecipanti:<br>
+        <label>Film partecipanti:
             <select name="filmIds" multiple size="5">
                 <option th:each="film : ${filmDisponibili}"
                         th:value="${film.id}"
@@ -32,12 +32,13 @@
                     Titolo film
                 </option>
             </select>
-        </label><br>
-        <small>Tieni premuto Ctrl (o Cmd su Mac) per selezionare più film contemporaneamente.</small><br>
+        </label>
+        <small>Tieni premuto Ctrl (o Cmd su Mac) per selezionare più film contemporaneamente.</small>
 
         <button type="submit">Salva</button>
     </form>
 
     <p><a th:href="@{/admin/festival}">Annulla</a></p>
+</div>
 </body>
 </html>

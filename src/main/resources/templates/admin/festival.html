@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Gestione Festival</title>
 </head>
 <body>
+<div class="container">
     <h1>Gestione Festival</h1>
 
     <a th:href="@{/admin/festival/nuovo}">+ Nuovo festival</a>
 
-    <ul>
-        <li th:each="festival : ${festivalList}">
-            <span th:text="${festival.nome} + ' (' + ${festival.anno} + ')'">Nome (Anno)</span>
+    <div class="card" th:each="festival : ${festivalList}">
+        <span th:text="${festival.nome} + ' (' + ${festival.anno} + ')'">Nome (Anno)</span>
+        <div class="actions">
             <a th:href="@{/admin/festival/{id}/modifica(id=${festival.id})}">Modifica</a>
-            <form th:action="@{/admin/festival/{id}/elimina(id=${festival.id})}" method="post" style="display:inline;">
+            <form th:action="@{/admin/festival/{id}/elimina(id=${festival.id})}" method="post">
                 <button type="submit">Elimina</button>
             </form>
-        </li>
-    </ul>
+        </div>
+    </div>
 
     <p><a th:href="@{/}">Torna alla home</a></p>
+</div>
 </body>
 </html>

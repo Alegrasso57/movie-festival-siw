@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Nuova Proiezione</title>
 </head>
 <body>
+<div class="container">
     <h1>Programma una nuova proiezione</h1>
 
-    <p th:if="${errore != null}" th:text="${errore}" style="color: red;">Messaggio di errore</p>
+    <p class="errore" th:if="${errore != null}" th:text="${errore}">Messaggio di errore</p>
 
     <form th:action="@{/admin/proiezioni}" method="post">
-
         <label>Festival:
             <select name="festivalId">
                 <option th:each="festival : ${festivalDisponibili}"
                         th:value="${festival.id}"
                         th:text="${festival.nome}">Nome Festival</option>
             </select>
-        </label><br>
+        </label>
 
         <label>Film:
             <select name="filmId">
@@ -27,7 +27,7 @@
                         th:value="${film.id}"
                         th:text="${film.titolo}">Titolo Film</option>
             </select>
-        </label><br>
+        </label>
 
         <label>Sala:
             <select name="salaId">
@@ -35,14 +35,15 @@
                         th:value="${sala.id}"
                         th:text="${sala.nome}">Nome Sala</option>
             </select>
-        </label><br>
+        </label>
 
-        <label>Data: <input type="date" name="data"></label><br>
-        <label>Ora: <input type="time" name="ora"></label><br>
+        <label>Data: <input type="date" name="data"></label>
+        <label>Ora: <input type="time" name="ora"></label>
 
         <button type="submit">Programma proiezione</button>
     </form>
 
     <p><a th:href="@{/admin/proiezioni}">Annulla</a></p>
+</div>
 </body>
 </html>

@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Form Regista</title>
 </head>
 <body>
+<div class="container">
     <h1>Regista</h1>
 
-    <p style="color: red;" th:if="${erroreValidazione}">
+    <p class="errore" th:if="${erroreValidazione}">
         Controlla i campi obbligatori: tutti i valori devono essere validi.
     </p>
 
     <form th:action="@{/admin/registi}" method="post">
         <input type="hidden" name="id" th:value="${regista.id}">
-
-        <label>Nome: <input type="text" name="nome" th:value="${regista.nome}"></label><br>
-        <label>Cognome: <input type="text" name="cognome" th:value="${regista.cognome}"></label><br>
-        <label>Data di nascita: <input type="date" name="dataNascita" th:value="${regista.dataNascita}"></label><br>
-        <label>Nazionalità: <input type="text" name="nazionalita" th:value="${regista.nazionalita}"></label><br>
-
+        <label>Nome: <input type="text" name="nome" th:value="${regista.nome}"></label>
+        <label>Cognome: <input type="text" name="cognome" th:value="${regista.cognome}"></label>
+        <label>Data di nascita: <input type="date" name="dataNascita" th:value="${regista.dataNascita}"></label>
+        <label>Nazionalità: <input type="text" name="nazionalita" th:value="${regista.nazionalita}"></label>
         <button type="submit">Salva</button>
     </form>
 
     <p><a th:href="@{/admin/registi}">Annulla</a></p>
+</div>
 </body>
 </html>

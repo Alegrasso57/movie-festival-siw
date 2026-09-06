@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Programma Proiezioni</title>
 </head>
 <body>
-    <h1>Programma delle proiezioni</h1>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+    </nav>
 
-    <div th:each="proiezione : ${proiezioni}">
-        <p>
+    <div class="container">
+        <h1>Programma delle proiezioni</h1>
+
+        <div class="card" th:each="proiezione : ${proiezioni}">
             <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
             —
             <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora}">Data e ora</span>
@@ -20,9 +27,9 @@
             <span th:text="${proiezione.stato}">Stato</span>
             —
             <a th:href="@{/festival/{id}(id=${proiezione.festival.id})}" th:text="${proiezione.festival.nome}">Festival</a>
-        </p>
-    </div>
+        </div>
 
-    <p><a th:href="@{/}">Torna alla home</a></p>
+        <p><a th:href="@{/}">Torna alla home</a></p>
+    </div>
 </body>
 </html>

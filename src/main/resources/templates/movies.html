@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Elenco Film</title>
 </head>
 <body>
-    <h1>Film</h1>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+    </nav>
 
-    <div th:each="film : ${films}">
-        <h2>
-            <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo</a>
-        </h2>
-        <p th:text="${film.genere} + ' - ' + ${film.anno}">Genere - Anno</p>
+    <div class="container">
+        <h1>Film</h1>
+
+        <div class="card" th:each="film : ${films}">
+            <h2>
+                <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo</a>
+            </h2>
+            <p th:text="${film.genere} + ' - ' + ${film.anno}">Genere - Anno</p>
+        </div>
+
+        <p><a th:href="@{/}">Torna alla home</a></p>
     </div>
-
-    <p><a th:href="@{/}">Torna alla home</a></p>
 </body>
 </html>

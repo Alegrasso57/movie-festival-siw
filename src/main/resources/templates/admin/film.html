@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Gestione Film</title>
 </head>
 <body>
+<div class="container">
     <h1>Gestione Film</h1>
 
     <a th:href="@{/admin/film/nuovo}">+ Nuovo film</a>
 
-    <ul>
-        <li th:each="film : ${filmList}">
-            <span th:text="${film.titolo} + ' (' + ${film.anno} + ')'">Titolo (Anno)</span>
+    <div class="card" th:each="film : ${filmList}">
+        <span th:text="${film.titolo} + ' (' + ${film.anno} + ')'">Titolo (Anno)</span>
+        <div class="actions">
             <a th:href="@{/admin/film/{id}/modifica(id=${film.id})}">Modifica</a>
-            <form th:action="@{/admin/film/{id}/elimina(id=${film.id})}" method="post" style="display:inline;">
+            <form th:action="@{/admin/film/{id}/elimina(id=${film.id})}" method="post">
                 <button type="submit">Elimina</button>
             </form>
-        </li>
-    </ul>
+        </div>
+    </div>
 
     <p><a th:href="@{/}">Torna alla home</a></p>
+</div>
 </body>
 </html>

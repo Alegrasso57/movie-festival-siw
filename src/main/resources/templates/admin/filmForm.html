@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Form Film</title>
 </head>
 <body>
+<div class="container">
     <h1>Film</h1>
 
-    <p style="color: red;" th:if="${erroreValidazione}">
+    <p class="errore" th:if="${erroreValidazione}">
         Controlla i campi obbligatori: tutti i valori devono essere validi.
     </p>
 
     <form th:action="@{/admin/film}" method="post">
         <input type="hidden" name="id" th:value="${film.id}">
-
-        <label>Titolo: <input type="text" name="titolo" th:value="${film.titolo}"></label><br>
-        <label>Anno: <input type="number" name="anno" th:value="${film.anno}"></label><br>
-        <label>Durata (minuti): <input type="number" name="durata" th:value="${film.durata}"></label><br>
-        <label>Genere: <input type="text" name="genere" th:value="${film.genere}"></label><br>
-        <label>Paese di produzione: <input type="text" name="paeseProduzione" th:value="${film.paeseProduzione}"></label><br>
+        <label>Titolo: <input type="text" name="titolo" th:value="${film.titolo}"></label>
+        <label>Anno: <input type="number" name="anno" th:value="${film.anno}"></label>
+        <label>Durata (minuti): <input type="number" name="durata" th:value="${film.durata}"></label>
+        <label>Genere: <input type="text" name="genere" th:value="${film.genere}"></label>
+        <label>Paese di produzione: <input type="text" name="paeseProduzione" th:value="${film.paeseProduzione}"></label>
 
         <label>Regista:
             <select name="registaId">
@@ -31,11 +31,12 @@
                     Nome Cognome
                 </option>
             </select>
-        </label><br>
+        </label>
 
         <button type="submit">Salva</button>
     </form>
 
     <p><a th:href="@{/admin/film}">Annulla</a></p>
+</div>
 </body>
 </html>

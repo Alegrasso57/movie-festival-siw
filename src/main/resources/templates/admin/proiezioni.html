@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Gestione Proiezioni</title>
 </head>
 <body>
+<div class="container">
     <h1>Gestione Proiezioni</h1>
 
     <a th:href="@{/admin/proiezioni/nuova}">+ Nuova proiezione</a>
 
-    <ul>
-        <li th:each="proiezione : ${proiezioniList}">
-            <span th:text="${proiezione.film.titolo} + ' - ' + ${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome} + ' [' + ${proiezione.stato} + ']'">
-                Dettagli proiezione
-            </span>
-
+    <div class="card" th:each="proiezione : ${proiezioniList}">
+        <span th:text="${proiezione.film.titolo} + ' - ' + ${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome} + ' [' + ${proiezione.stato} + ']'">
+            Dettagli proiezione
+        </span>
+        <div class="actions">
             <form th:if="${proiezione.stato.name() == 'SCHEDULED'}"
-                  th:action="@{/admin/proiezioni/{id}/completa(id=${proiezione.id})}" method="post" style="display:inline;">
+                  th:action="@{/admin/proiezioni/{id}/completa(id=${proiezione.id})}" method="post">
                 <button type="submit">Segna come completata</button>
             </form>
-
-            <form th:action="@{/admin/proiezioni/{id}/elimina(id=${proiezione.id})}" method="post" style="display:inline;">
+            <form th:action="@{/admin/proiezioni/{id}/elimina(id=${proiezione.id})}" method="post">
                 <button type="submit">Elimina</button>
             </form>
-        </li>
-    </ul>
+        </div>
+    </div>
 
     <p><a th:href="@{/}">Torna alla home</a></p>
+</div>
 </body>
 </html>

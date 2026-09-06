@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Form Sala</title>
 </head>
 <body>
+<div class="container">
     <h1>Sala</h1>
 
-    <p style="color: red;" th:if="${erroreValidazione}">
+    <p class="errore" th:if="${erroreValidazione}">
         Controlla i campi obbligatori: tutti i valori devono essere validi.
     </p>
 
     <form th:action="@{/admin/sale}" method="post">
         <input type="hidden" name="id" th:value="${sala.id}">
-
-        <label>Nome: <input type="text" name="nome" th:value="${sala.nome}"></label><br>
-        <label>Indirizzo: <input type="text" name="indirizzo" th:value="${sala.indirizzo}"></label><br>
-        <label>Capienza: <input type="number" name="capienza" th:value="${sala.capienza}"></label><br>
-
+        <label>Nome: <input type="text" name="nome" th:value="${sala.nome}"></label>
+        <label>Indirizzo: <input type="text" name="indirizzo" th:value="${sala.indirizzo}"></label>
+        <label>Capienza: <input type="number" name="capienza" th:value="${sala.capienza}"></label>
         <button type="submit">Salva</button>
     </form>
 
     <p><a th:href="@{/admin/sale}">Annulla</a></p>
+</div>
 </body>
 </html>

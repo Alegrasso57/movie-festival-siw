@@ -3,43 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <title th:text="${film.titolo}">Dettaglio Film</title>
 </head>
 <body>
-    <h1 th:text="${film.titolo}">Titolo</h1>
-    <p th:text="'Anno: ' + ${film.anno}">Anno</p>
-    <p th:text="'Durata: ' + ${film.durata} + ' minuti'">Durata</p>
-    <p th:text="'Genere: ' + ${film.genere}">Genere</p>
-    <p th:text="'Paese di produzione: ' + ${film.paeseProduzione}">Paese</p>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+    </nav>
 
-    <h2>Regista</h2>
-    <p th:if="${film.regista != null}"
-       th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</p>
+    <div class="container">
+        <h1 th:text="${film.titolo}">Titolo</h1>
+        <p th:text="'Anno: ' + ${film.anno}">Anno</p>
+        <p th:text="'Durata: ' + ${film.durata} + ' minuti'">Durata</p>
+        <p th:text="'Genere: ' + ${film.genere}">Genere</p>
+        <p th:text="'Paese di produzione: ' + ${film.paeseProduzione}">Paese</p>
 
-    <h2>Festival a cui partecipa</h2>
-    <ul>
-        <li th:each="festival : ${film.festival}" th:text="${festival.nome}">Nome Festival</li>
-    </ul>
+        <h2>Regista</h2>
+        <p th:if="${film.regista != null}"
+           th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</p>
 
-    <h2>Proiezioni</h2>
-    <ul>
-        <li th:each="proiezione : ${film.proiezioni}"
-            th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}">
-            Data Ora - Sala
-        </li>
-    </ul>
+        <h2>Festival a cui partecipa</h2>
+        <div class="card" th:each="festival : ${film.festival}">
+            <span th:text="${festival.nome}">Nome Festival</span>
+        </div>
 
-    <h2>Recensioni</h2>
-    <div id="recensioni-root"
-         th:attr="data-film-id=${film.id},data-username=${username}">
-        Caricamento recensioni...
+        <h2>Proiezioni</h2>
+        <div class="card" th:each="proiezione : ${film.proiezioni}">
+            <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}">
+                Data Ora - Sala
+            </span>
+        </div>
+
+        <h2>Recensioni</h2>
+        <div id="recensioni-root"
+             th:attr="data-film-id=${film.id},data-username=${username}">
+            Caricamento recensioni...
+        </div>
+
+        <p><a th:href="@{/movies}">Torna all'elenco film</a></p>
+
+        <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+        <script th:src="@{/js/recensioni.js}"></script>
     </div>
-
-    <p><a th:href="@{/movies}">Torna all'elenco film</a></p>
-
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script th:src="@{/js/recensioni.js}"></script>
 </body>
 </html>
