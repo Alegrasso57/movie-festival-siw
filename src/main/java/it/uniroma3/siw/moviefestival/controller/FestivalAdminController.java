@@ -1,7 +1,6 @@
 package it.uniroma3.siw.moviefestival.controller;
 
 import jakarta.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import it.uniroma3.siw.moviefestival.model.Festival;
-import it.uniroma3.siw.moviefestival.model.Film;
 import it.uniroma3.siw.moviefestival.service.FestivalService;
 import it.uniroma3.siw.moviefestival.service.FilmService;
 
@@ -65,32 +63,10 @@ public class FestivalAdminController {
             return "admin/festivalForm";
         }
 
-        Festival festival;
-        if (festivalForm.getId() != null) {
-            festival = festivalService.findById(festivalForm.getId());
-        } else {
-            festival = new Festival();
-        }
-
-        festival.setNome(festivalForm.getNome());
-        festival.setAnno(festivalForm.getAnno());
-        festival.setCitta(festivalForm.getCitta());
-        festival.setDataInizio(festivalForm.getDataInizio());
-        festival.setDataFine(festivalForm.getDataFine());
-        festival.setDescrizione(festivalForm.getDescrizione());
-
-        List<Film> filmSelezionati = new ArrayList<>();
-        if (filmIds != null) {
-            for (Long filmId : filmIds) {
-                Film film = filmService.findById(filmId);
-                if (film != null) {
-                    filmSelezionati.add(film);
-                }
-            }
-        }
-        festival.setFilm(filmSelezionati);
-
-        festivalService.save(festival);
+        // La logica di aggiornamento dei film partecipanti (tabella di join
+        // ManyToMany) è nel Service, non qui: vedi FestivalService.save
+        // per il perché non basta un semplice festival.setFilm(...).
+        festivalService.save(festivalForm, filmIds);
         return "redirect:/admin/festival";
     }
 

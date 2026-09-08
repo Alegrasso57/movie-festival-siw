@@ -9,6 +9,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -51,6 +52,7 @@ public class Film {
     )
     private List<Festival> festival = new ArrayList<>();
 
+    @OrderBy("data ASC, ora ASC")
     @OneToMany(mappedBy = "film")
     private List<Proiezione> proiezioni = new ArrayList<>();
 

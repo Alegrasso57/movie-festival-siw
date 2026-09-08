@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -39,6 +40,7 @@ public class Festival {
     @ManyToMany(mappedBy = "festival")
     private List<Film> film = new ArrayList<>();
 
+    @OrderBy("data ASC, ora ASC")
     @OneToMany(mappedBy = "festival")
     private List<Proiezione> proiezioni = new ArrayList<>();
 

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import it.uniroma3.siw.moviefestival.model.Proiezione;
@@ -42,12 +43,26 @@ public class ProiezioneAdminController {
     @GetMapping("/admin/proiezioni/nuova")
     public String formNuova(Model model) {
         caricaListeSelezione(model);
+        model.addAttribute("proiezione", null);
+        model.addAttribute("errore", null);
+        return "admin/proiezioneForm";
+    }
+
+    @GetMapping("/admin/proiezioni/{id}/modifica")
+    public String formModifica(@PathVariable("id") Long id, Model model) {
+        Proiezione proiezione = proiezioneService.findById(id);
+        if (proiezione == null) {
+            return "redirect:/admin/proiezioni";
+        }
+        caricaListeSelezione(model);
+        model.addAttribute("proiezione", proiezione);
         model.addAttribute("errore", null);
         return "admin/proiezioneForm";
     }
 
     @PostMapping("/admin/proiezioni")
-    public String salva(@ModelAttribute("festivalId") Long festivalId,
+    public String salva(@RequestParam(value = "id", required = false) Long id,
+                         @ModelAttribute("festivalId") Long festivalId,
                          @ModelAttribute("filmId") Long filmId,
                          @ModelAttribute("salaId") Long salaId,
                          @ModelAttribute("data") String data,
@@ -55,27 +70,25 @@ public class ProiezioneAdminController {
                          Model model) {
 
         if (data == null || data.isBlank()) {
-            caricaListeSelezione(model);
-            model.addAttribute("errore", "La data è obbligatoria");
-            return "admin/proiezioneForm";
+            return riformaConErrore(model, id, "La data è obbligatoria");
         }
         if (ora == null || ora.isBlank()) {
-            caricaListeSelezione(model);
-            model.addAttribute("errore", "L'ora è obbligatoria");
-            return "admin/proiezioneForm";
+            return riformaConErrore(model, id, "L'ora è obbligatoria");
         }
 
         try {
             LocalDate dataParsata = LocalDate.parse(data);
             LocalTime oraParsata = LocalTime.parse(ora);
 
-            proiezioneService.creaProiezione(festivalId, filmId, salaId, dataParsata, oraParsata);
+            if (id == null) {
+                proiezioneService.creaProiezione(festivalId, filmId, salaId, dataParsata, oraParsata);
+            } else {
+                proiezioneService.modificaProiezione(id, festivalId, filmId, salaId, dataParsata, oraParsata);
+            }
             return "redirect:/admin/proiezioni";
 
         } catch (IllegalArgumentException | IllegalStateException e) {
-            caricaListeSelezione(model);
-            model.addAttribute("errore", e.getMessage());
-            return "admin/proiezioneForm";
+            return riformaConErrore(model, id, e.getMessage());
         }
     }
 
@@ -93,6 +106,13 @@ public class ProiezioneAdminController {
             proiezioneService.save(proiezione);
         }
         return "redirect:/admin/proiezioni";
+    }
+
+    private String riformaConErrore(Model model, Long id, String messaggio) {
+        caricaListeSelezione(model);
+        model.addAttribute("proiezione", id != null ? proiezioneService.findById(id) : null);
+        model.addAttribute("errore", messaggio);
+        return "admin/proiezioneForm";
     }
 
     private void caricaListeSelezione(Model model) {

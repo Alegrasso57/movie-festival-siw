@@ -24,7 +24,7 @@
         <div class="card" th:each="proiezione : ${proiezioni}">
             <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
             —
-            <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora}">Data e ora</span>
+            <span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora}">Data e ora</span>
             —
             <span th:text="${proiezione.sala.nome} + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">Sala (indirizzo, capienza)</span>
             —

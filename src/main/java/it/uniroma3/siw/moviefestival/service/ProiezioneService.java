@@ -35,7 +35,7 @@ public class ProiezioneService {
 
     @Transactional(readOnly = true)
     public List<Proiezione> findAll() {
-        return proiezioneRepository.findAll();
+        return proiezioneRepository.findAllByOrderByDataAscOraAsc();
     }
 
     @Transactional(readOnly = true)
@@ -69,6 +69,8 @@ public class ProiezioneService {
             throw new IllegalArgumentException("Sala non trovata");
         }
 
+        validaFinestraTemporale(festival, data);
+
         boolean salaOccupata = proiezioneRepository.existsBySalaAndDataAndOra(sala, data, ora);
         if (salaOccupata) {
             throw new IllegalStateException(
@@ -84,6 +86,73 @@ public class ProiezioneService {
         proiezione.setStato(StatoProiezione.SCHEDULED);
 
         return proiezioneRepository.save(proiezione);
+    }
+
+    /**
+     * Modifica una proiezione esistente. Riusa le stesse verifiche di
+     * consistenza della creazione (finestra temporale del festival, sala
+     * libera), escludendo però la proiezione stessa dal controllo di
+     * conflitto sulla sala — altrimenti risulterebbe sempre "occupata da
+     * se stessa".
+     */
+    @Transactional
+    public Proiezione modificaProiezione(Long id, Long festivalId, Long filmId, Long salaId,
+                                          LocalDate data, LocalTime ora) {
+
+        Proiezione proiezione = proiezioneRepository.findById(id).orElse(null);
+        if (proiezione == null) {
+            throw new IllegalArgumentException("Proiezione non trovata");
+        }
+        if (data == null) {
+            throw new IllegalArgumentException("La data è obbligatoria");
+        }
+        if (ora == null) {
+            throw new IllegalArgumentException("L'ora è obbligatoria");
+        }
+
+        Festival festival = festivalRepository.findById(festivalId).orElse(null);
+        if (festival == null) {
+            throw new IllegalArgumentException("Festival non trovato");
+        }
+
+        Film film = filmRepository.findById(filmId).orElse(null);
+        if (film == null) {
+            throw new IllegalArgumentException("Film non trovato");
+        }
+
+        Sala sala = salaRepository.findById(salaId).orElse(null);
+        if (sala == null) {
+            throw new IllegalArgumentException("Sala non trovata");
+        }
+
+        validaFinestraTemporale(festival, data);
+
+        boolean salaOccupata = proiezioneRepository.existsBySalaAndDataAndOraAndIdNot(sala, data, ora, id);
+        if (salaOccupata) {
+            throw new IllegalStateException(
+                "La sala '" + sala.getNome() + "' è già occupata in data " + data + " alle ore " + ora);
+        }
+
+        proiezione.setFestival(festival);
+        proiezione.setFilm(film);
+        proiezione.setSala(sala);
+        proiezione.setData(data);
+        proiezione.setOra(ora);
+
+        return proiezioneRepository.save(proiezione);
+    }
+
+    /**
+     * Verifica di consistenza richiesta dal progetto: una proiezione non può
+     * essere programmata al di fuori della finestra temporale (dataInizio -
+     * dataFine) del festival a cui appartiene.
+     */
+    private void validaFinestraTemporale(Festival festival, LocalDate data) {
+        if (data.isBefore(festival.getDataInizio()) || data.isAfter(festival.getDataFine())) {
+            throw new IllegalStateException(
+                "La data " + data + " è fuori dalla finestra del festival '" + festival.getNome()
+                    + "' (dal " + festival.getDataInizio() + " al " + festival.getDataFine() + ")");
+        }
     }
 
     @Transactional

@@ -12,11 +12,14 @@
 
     <a th:href="@{/admin/proiezioni/nuova}">+ Nuova proiezione</a>
 
+    <!-- proiezioniList arriva già ordinata per data/ora (vedi
+         ProiezioneRepository.findAllByOrderByDataAscOraAsc) -->
     <div class="card" th:each="proiezione : ${proiezioniList}">
-        <span th:text="${proiezione.film.titolo} + ' - ' + ${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome} + ' [' + ${proiezione.stato} + ']'">
+        <span th:text="${proiezione.film.titolo} + ' — ' + ${proiezione.festival.nome} + ' — ' + ${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora} + ' — ' + ${proiezione.sala.nome} + ' [' + ${proiezione.stato} + ']'">
             Dettagli proiezione
         </span>
         <div class="actions">
+            <a th:href="@{/admin/proiezioni/{id}/modifica(id=${proiezione.id})}">Modifica</a>
             <form th:if="${proiezione.stato.name() == 'SCHEDULED'}"
                   th:action="@{/admin/proiezioni/{id}/completa(id=${proiezione.id})}" method="post">
                 <button type="submit">Segna come completata</button>

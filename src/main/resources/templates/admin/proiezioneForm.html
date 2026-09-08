@@ -4,20 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Nuova Proiezione</title>
+    <title th:text="${proiezione != null ? 'Modifica Proiezione' : 'Nuova Proiezione'}">Nuova Proiezione</title>
 </head>
 <body>
 <div class="container">
-    <h1>Programma una nuova proiezione</h1>
+    <h1 th:text="${proiezione != null ? 'Modifica proiezione' : 'Programma una nuova proiezione'}">
+        Programma una nuova proiezione
+    </h1>
 
     <p class="errore" th:if="${errore != null}" th:text="${errore}">Messaggio di errore</p>
 
     <form th:action="@{/admin/proiezioni}" method="post">
+        <input type="hidden" name="id" th:if="${proiezione != null}" th:value="${proiezione.id}">
+
         <label>Festival:
             <select name="festivalId">
                 <option th:each="festival : ${festivalDisponibili}"
                         th:value="${festival.id}"
-                        th:text="${festival.nome}">Nome Festival</option>
+                        th:text="${festival.nome}"
+                        th:selected="${proiezione != null and proiezione.festival.id == festival.id}">Nome Festival</option>
             </select>
         </label>
 
@@ -25,7 +30,8 @@
             <select name="filmId">
                 <option th:each="film : ${filmDisponibili}"
                         th:value="${film.id}"
-                        th:text="${film.titolo}">Titolo Film</option>
+                        th:text="${film.titolo}"
+                        th:selected="${proiezione != null and proiezione.film.id == film.id}">Titolo Film</option>
             </select>
         </label>
 
@@ -33,14 +39,21 @@
             <select name="salaId">
                 <option th:each="sala : ${saleDisponibili}"
                         th:value="${sala.id}"
-                        th:text="${sala.nome}">Nome Sala</option>
+                        th:text="${sala.nome}"
+                        th:selected="${proiezione != null and proiezione.sala.id == sala.id}">Nome Sala</option>
             </select>
         </label>
 
-        <label>Data: <input type="date" name="data"></label>
-        <label>Ora: <input type="time" name="ora"></label>
+        <label>Data:
+            <input type="date" name="data" th:value="${proiezione != null ? proiezione.data : null}">
+        </label>
+        <label>Ora:
+            <input type="time" name="ora" th:value="${proiezione != null ? proiezione.ora : null}">
+        </label>
 
-        <button type="submit">Programma proiezione</button>
+        <button type="submit" th:text="${proiezione != null ? 'Salva modifiche' : 'Programma proiezione'}">
+            Programma proiezione
+        </button>
     </form>
 
     <p><a th:href="@{/admin/proiezioni}">Annulla</a></p>
