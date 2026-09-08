@@ -18,7 +18,7 @@
         </form>
     </nav>
 
-    <div class="container">
+    <div class="container pagina-centrata">
         <h1 th:text="${film.titolo}">Titolo</h1>
         <p th:text="'Anno: ' + ${film.anno}">Anno</p>
         <p th:text="'Durata: ' + ${film.durata} + ' minuti'">Durata</p>
@@ -34,16 +34,20 @@
         </div>
 
         <h2>Festival a cui partecipa</h2>
+        <div class="grid">
         <div class="card" th:each="festival : ${film.festival}">
             <span th:text="${festival.nome}">Nome Festival</span>
         </div>
+        </div>
 
         <h2>Proiezioni</h2>
+        <div class="grid">
         <div class="card" th:each="proiezione : ${film.proiezioni}">
             <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}
                             + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">
                 Data Ora - Sala (Indirizzo, capienza)
             </span>
+        </div>
         </div>
 
         <h2>Recensioni</h2>

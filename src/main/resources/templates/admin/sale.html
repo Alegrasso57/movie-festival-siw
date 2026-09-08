@@ -7,6 +7,16 @@
     <title>Gestione Sale</title>
 </head>
 <body>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+        <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
+    </nav>
 <div class="container pagina-centrata">
     <h1>Gestione Sale</h1>
 
@@ -14,6 +24,7 @@
 
     <a th:href="@{/admin/sale/nuova}">+ Nuova sala</a>
 
+    <div class="grid">
     <div class="card" th:each="sala : ${sale}">
         <span th:text="${sala.nome} + ' (' + ${sala.capienza} + ' posti)'">Nome (capienza)</span>
         <p th:text="${sala.indirizzo}">Indirizzo</p>
@@ -23,6 +34,7 @@
                 <button type="submit">Elimina</button>
             </form>
         </div>
+    </div>
     </div>
 
     <p><a th:href="@{/}">Torna alla home</a></p>

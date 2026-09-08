@@ -7,6 +7,16 @@
     <title>Form Film</title>
 </head>
 <body>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+        <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
+    </nav>
 <div class="container pagina-centrata">
     <h1>Film</h1>
 

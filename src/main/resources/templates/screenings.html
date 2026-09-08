@@ -18,9 +18,10 @@
         </form>
     </nav>
 
-    <div class="container">
+    <div class="container pagina-centrata">
         <h1>Programma delle proiezioni</h1>
 
+        <div class="grid">
         <div class="card" th:each="proiezione : ${proiezioni}">
             <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
             —
@@ -31,6 +32,7 @@
             <span th:text="${proiezione.stato}">Stato</span>
             —
             <a th:href="@{/festival/{id}(id=${proiezione.festival.id})}" th:text="${proiezione.festival.nome}">Festival</a>
+        </div>
         </div>
 
         <p><a th:href="@{/}">Torna alla home</a></p>

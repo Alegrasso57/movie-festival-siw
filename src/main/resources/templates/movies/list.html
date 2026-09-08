@@ -18,14 +18,16 @@
         </form>
     </nav>
 
-    <div class="container">
+    <div class="container pagina-centrata">
         <h1>Film</h1>
 
+        <div class="grid">
         <div class="card" th:each="film : ${films}">
             <h2>
                 <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo</a>
             </h2>
             <p th:text="${film.genere} + ' - ' + ${film.anno}">Genere - Anno</p>
+        </div>
         </div>
 
         <p><a th:href="@{/}">Torna alla home</a></p>
