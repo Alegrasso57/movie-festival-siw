@@ -19,7 +19,7 @@ public class FestivalController {
     @GetMapping("/festivals")
     public String elencoFestival(Model model) {
         model.addAttribute("festivals", festivalService.findAll());
-        return "festivals";
+        return "festivals/list";
     }
 
     @GetMapping("/festival/{id}")
@@ -29,6 +29,6 @@ public class FestivalController {
             return "redirect:/festivals";
         }
         model.addAttribute("festival", festival);
-        return "festivalDetail";
+        return "festivals/show";
     }
 }

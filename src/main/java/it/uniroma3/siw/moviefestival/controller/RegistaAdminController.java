@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.uniroma3.siw.moviefestival.model.Regista;
 import it.uniroma3.siw.moviefestival.service.RegistaService;
 
@@ -71,8 +72,12 @@ public class RegistaAdminController {
     }
 
     @PostMapping("/admin/registi/{id}/elimina")
-    public String elimina(@PathVariable("id") Long id) {
-        registaService.deleteById(id);
+    public String elimina(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            registaService.deleteById(id);
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("erroreEliminazione", e.getMessage());
+        }
         return "redirect:/admin/registi";
     }
 }

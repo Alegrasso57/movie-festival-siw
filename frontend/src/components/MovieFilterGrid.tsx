@@ -4,46 +4,37 @@ import {
   Card,
   CardContent,
   Typography,
-  Chip,
-  Slider,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
+  TextField,
   CircularProgress,
   Alert,
 } from '@mui/material'
-import type { SelectChangeEvent } from '@mui/material'
 import { getMovies } from '../services/movieService'
 import type { Film } from '../types'
-
-type Ordinamento = 'titoloAsc' | 'titoloDesc' | 'annoAsc' | 'annoDesc'
 
 interface MovieFilterGridProps {
   // Quando MovieCreateDialog crea un nuovo film, viene passato qui e
   // preposto alla lista senza bisogno di richiamare il server (GET /movies
   // resta una chiamata sola, fatta al mount).
   newMovie?: Film | null
+  // Valore iniziale della ricerca per titolo, es. da ?q=... nell'URL
+  // (arriva dalla barra di ricerca nella nav del sito Thymeleaf).
+  initialQuery?: string
 }
 
-export default function MovieFilterGrid({ newMovie }: MovieFilterGridProps) {
+// Pagina di ricerca film: volutamente semplice. Chi arriva qui l'ha fatto
+// tramite la barra di ricerca del sito e vuole vedere solo il risultato
+// della propria ricerca, non un intero catalogo con filtri avanzati
+// (registi, intervallo anni, ordinamento) che qui non hanno senso.
+export default function MovieFilterGrid({ newMovie, initialQuery }: MovieFilterGridProps) {
   const [allMovies, setAllMovies] = useState<Film[]>([])
   const [caricamento, setCaricamento] = useState(true)
   const [errore, setErrore] = useState<string | null>(null)
 
-  const [registaSelezionato, setRegistaSelezionato] = useState<string | null>(null)
-  const [annoRange, setAnnoRange] = useState<[number, number] | null>(null)
-  const [ordinamento, setOrdinamento] = useState<Ordinamento>('titoloAsc')
+  const [testoRicerca, setTestoRicerca] = useState(initialQuery ?? '')
 
   useEffect(() => {
     getMovies()
-      .then((movies) => {
-        setAllMovies(movies)
-        if (movies.length > 0) {
-          const anni = movies.map((m) => m.anno)
-          setAnnoRange([Math.min(...anni), Math.max(...anni)])
-        }
-      })
+      .then(setAllMovies)
       .catch(() => setErrore('Impossibile caricare i film dal server'))
       .finally(() => setCaricamento(false))
   }, [])
@@ -54,61 +45,18 @@ export default function MovieFilterGrid({ newMovie }: MovieFilterGridProps) {
     }
   }, [newMovie])
 
-  const registiDisponibili = useMemo(() => {
-    const nomi = allMovies
-      .map((m) => m.registaNome)
-      .filter((nome): nome is string => Boolean(nome))
-    return Array.from(new Set(nomi)).sort()
-  }, [allMovies])
-
-  const limitiAnno = useMemo((): [number, number] => {
-    if (allMovies.length === 0) return [1888, new Date().getFullYear()]
-    const anni = allMovies.map((m) => m.anno)
-    return [Math.min(...anni), Math.max(...anni)]
-  }, [allMovies])
-
   const filteredMovies = useMemo(() => {
-    let risultato = [...allMovies]
-
-    if (registaSelezionato) {
-      risultato = risultato.filter((m) => m.registaNome === registaSelezionato)
-    }
-
-    if (annoRange) {
-      risultato = risultato.filter((m) => m.anno >= annoRange[0] && m.anno <= annoRange[1])
-    }
-
-    switch (ordinamento) {
-      case 'titoloAsc':
-        risultato.sort((a, b) => a.titolo.localeCompare(b.titolo))
-        break
-      case 'titoloDesc':
-        risultato.sort((a, b) => b.titolo.localeCompare(a.titolo))
-        break
-      case 'annoAsc':
-        risultato.sort((a, b) => a.anno - b.anno)
-        break
-      case 'annoDesc':
-        risultato.sort((a, b) => b.anno - a.anno)
-        break
-    }
-
-    return risultato
-  }, [allMovies, registaSelezionato, annoRange, ordinamento])
-
-  function toggleRegista(nome: string) {
-    // Chip esclusivi: cliccarne uno già attivo lo deseleziona tornando a "Tutti".
-    setRegistaSelezionato((attuale) => (attuale === nome ? null : nome))
-  }
-
-  function handleOrdinamentoChange(evento: SelectChangeEvent) {
-    setOrdinamento(evento.target.value as Ordinamento)
-  }
+    const query = testoRicerca.trim().toLowerCase()
+    const risultato = query
+      ? allMovies.filter((m) => m.titolo.toLowerCase().includes(query))
+      : [...allMovies]
+    return risultato.sort((a, b) => a.titolo.localeCompare(b.titolo))
+  }, [allMovies, testoRicerca])
 
   if (caricamento) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <CircularProgress />
+        <CircularProgress color="primary" />
       </Box>
     )
   }
@@ -119,53 +67,27 @@ export default function MovieFilterGrid({ newMovie }: MovieFilterGridProps) {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-        <Chip
-          label="Tutti i registi"
-          color={registaSelezionato === null ? 'primary' : 'default'}
-          onClick={() => setRegistaSelezionato(null)}
-        />
-        {registiDisponibili.map((nome) => (
-          <Chip
-            key={nome}
-            label={nome}
-            color={registaSelezionato === nome ? 'primary' : 'default'}
-            onClick={() => toggleRegista(nome)}
-          />
-        ))}
-      </Box>
-
-      <Box sx={{ maxWidth: 400, mb: 3 }}>
-        <Typography gutterBottom>
-          Anno: {annoRange ? `${annoRange[0]} — ${annoRange[1]}` : ''}
-        </Typography>
-        <Slider
-          value={annoRange ?? limitiAnno}
-          min={limitiAnno[0]}
-          max={limitiAnno[1]}
-          onChange={(_, valore) => setAnnoRange(valore as [number, number])}
-          valueLabelDisplay="auto"
-        />
-      </Box>
-
-      <FormControl sx={{ minWidth: 220, mb: 3 }} size="small">
-        <InputLabel id="ordinamento-label">Ordina per</InputLabel>
-        <Select
-          labelId="ordinamento-label"
-          value={ordinamento}
-          label="Ordina per"
-          onChange={handleOrdinamentoChange}
-        >
-          <MenuItem value="titoloAsc">Titolo A → Z</MenuItem>
-          <MenuItem value="titoloDesc">Titolo Z → A</MenuItem>
-          <MenuItem value="annoAsc">Anno crescente</MenuItem>
-          <MenuItem value="annoDesc">Anno decrescente</MenuItem>
-        </Select>
-      </FormControl>
+      <TextField
+        label="Cerca per titolo"
+        placeholder="Es. Inception"
+        value={testoRicerca}
+        onChange={(e) => setTestoRicerca(e.target.value)}
+        size="small"
+        fullWidth
+        sx={{ mb: 3, maxWidth: 360 }}
+      />
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        {filteredMovies.length} film trovati
+        {testoRicerca.trim()
+          ? `${filteredMovies.length} film trovati per «${testoRicerca.trim()}»`
+          : `${filteredMovies.length} film disponibili`}
       </Typography>
+
+      {filteredMovies.length === 0 && (
+        <Alert severity="info" sx={{ maxWidth: 480 }}>
+          Nessun film trovato con questo titolo.
+        </Alert>
+      )}
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {filteredMovies.map((film) => (

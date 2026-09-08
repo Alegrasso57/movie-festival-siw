@@ -12,6 +12,10 @@
         <a th:href="@{/festivals}">Festival</a>
         <a th:href="@{/movies}">Film</a>
         <a th:href="@{/screenings}">Proiezioni</a>
+            <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
     </nav>
 
     <div class="container">
@@ -22,7 +26,7 @@
             —
             <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora}">Data e ora</span>
             —
-            <span th:text="${proiezione.sala.nome}">Sala</span>
+            <span th:text="${proiezione.sala.nome} + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">Sala (indirizzo, capienza)</span>
             —
             <span th:text="${proiezione.stato}">Stato</span>
             —

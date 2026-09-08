@@ -12,27 +12,33 @@
         <a th:href="@{/festivals}">Festival</a>
         <a th:href="@{/movies}">Film</a>
         <a th:href="@{/screenings}">Proiezioni</a>
+        <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
     </nav>
 
     <div class="container">
-        <h1>Benvenuto su Movie Festival</h1>
+        <div class="hero">
+            <h1>Benvenuto su Movie Festival</h1>
+            <p class="sottotitolo">Cerca festival, film, proiezioni e ogni informazione</p>
 
-        <h2>Esplora</h2>
-        <ul class="link-list">
-            <li><a th:href="@{/festivals}">Elenco festival</a></li>
-            <li><a th:href="@{/movies}">Elenco film</a></li>
-            <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
-        </ul>
+            <ul class="hero-links">
+                <li><a th:href="@{/festivals}">Elenco festival</a></li>
+                <li><a th:href="@{/movies}">Elenco film</a></li>
+                <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
+            </ul>
 
-        <div sec:authorize="!isAuthenticated()">
-            <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a> per lasciare recensioni.</p>
-        </div>
+            <div class="hero-auth" sec:authorize="!isAuthenticated()">
+                <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a> per lasciare recensioni.</p>
+            </div>
 
-        <div sec:authorize="isAuthenticated()">
-            <p>Sei connessa come <span sec:authentication="name">username</span>.</p>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit">Esci (logout)</button>
-            </form>
+            <div class="hero-auth" sec:authorize="isAuthenticated()">
+                <p>Sei connessa come <span sec:authentication="name">username</span>.</p>
+                <form th:action="@{/logout}" method="post" style="display:inline-block; max-width:none; background:none; border:none; padding:0;">
+                    <button type="submit">Esci (logout)</button>
+                </form>
+            </div>
         </div>
 
         <div class="admin-section" sec:authorize="hasAuthority('ADMIN')">

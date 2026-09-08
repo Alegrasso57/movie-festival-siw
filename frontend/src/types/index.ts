@@ -31,9 +31,9 @@ export interface NuovoFilm {
 
 export type Ruolo = 'USER' | 'ADMIN'
 
-// Rispecchia LoginResponseDTO.java
-export interface LoginResponse {
-  token: string
-  username: string
-  ruolo: Ruolo
+// Rispecchia SessionInfoDTO.java — risposta di GET /api/auth/me
+export interface SessionInfo {
+  autenticato: boolean
+  username: string | null
+  ruolo: Ruolo | null
 }

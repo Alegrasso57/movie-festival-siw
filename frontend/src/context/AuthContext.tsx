@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import type { ReactNode } from 'react'
-import * as authService from '../services/authService'
+import { getSessionInfo } from '../services/authService'
 import type { Ruolo } from '../types'
 
 interface AuthUser {
@@ -11,43 +11,40 @@ interface AuthUser {
 interface AuthContextValue {
   user: AuthUser | null
   isAuthenticated: boolean
-  login: (username: string, password: string) => Promise<void>
-  logout: () => void
+  caricamento: boolean
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
+// Niente login/logout qui dentro: l'autenticazione avviene sempre sulla
+// pagina /login del sito (form Thymeleaf classico), che crea la sessione
+// HTTP condivisa da tutta l'applicazione. Questo contesto si limita a
+// chiedere al backend "chi sono?" (GET /api/auth/me) all'avvio, per sapere
+// se mostrare le funzionalità riservate agli ADMIN (es. creare un film).
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
+  const [caricamento, setCaricamento] = useState(true)
 
-  // Token recovery: all'avvio dell'app, se un utente aveva già fatto login,
-  // ripristina lo stato da localStorage invece di forzare un nuovo login.
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    const username = localStorage.getItem('username')
-    const ruolo = localStorage.getItem('ruolo') as Ruolo | null
-    if (token && username && ruolo) {
-      setUser({ username, ruolo })
-    }
+  const caricaSessione = useCallback(() => {
+    setCaricamento(true)
+    getSessionInfo()
+      .then((info) => {
+        setUser(
+          info.autenticato && info.username && info.ruolo
+            ? { username: info.username, ruolo: info.ruolo }
+            : null
+        )
+      })
+      .catch(() => setUser(null))
+      .finally(() => setCaricamento(false))
   }, [])
 
-  async function login(username: string, password: string) {
-    const risposta = await authService.login(username, password)
-    localStorage.setItem('token', risposta.token)
-    localStorage.setItem('username', risposta.username)
-    localStorage.setItem('ruolo', risposta.ruolo)
-    setUser({ username: risposta.username, ruolo: risposta.ruolo })
-  }
-
-  function logout() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    localStorage.removeItem('ruolo')
-    setUser(null)
-  }
+  useEffect(() => {
+    caricaSessione()
+  }, [caricaSessione])
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: user !== null, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: user !== null, caricamento }}>
       {children}
     </AuthContext.Provider>
   )

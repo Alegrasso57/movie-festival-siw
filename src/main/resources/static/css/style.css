@@ -1,10 +1,15 @@
-/* ===== Variabili CSS (vedi slide "Variabili CSS") ===== */
+/* ===== Variabili CSS (vedi slide "Variabili CSS") — palette pastello ===== */
 :root {
-    --primary-color: #e94560;
-    --dark-color: #1a1a2e;
-    --bg-color: #f5f5f7;
-    --text-color: #222;
+    --primary-color: #c17685;
+    --primary-color-hover: #a85f6d;
+    --dark-color: #6b5b7b;
+    --nav-color: #6f9779;
+    --nav-color-hover: #5c7f65;
+    --bg-color: #faf6f2;
+    --text-color: #3a3540;
     --card-bg: #ffffff;
+    --muted-color: #8a7d94;
+    --border-color: #e5dfe8;
 }
 
 /* ===== Reset di base ===== */
@@ -64,19 +69,134 @@ a:hover {
     text-decoration: underline;
 }
 
-/* ===== Navigazione principale: Flexbox (vedi slide "Flexbox basics") ===== */
+/* ===== Navigazione principale: Flexbox, centrata (vedi slide "Flexbox basics") ===== */
 nav.main-nav {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    background-color: var(--dark-color);
-    padding: 0.75rem 1.25rem;
+    flex-wrap: wrap;
+    background-color: var(--nav-color);
+    padding: 0.3rem 1rem;
+    gap: 0.9rem;
+    row-gap: 0.35rem;
 }
 
 nav.main-nav a {
     color: white;
-    margin-right: 1.25rem;
+    margin-right: 0;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+/* ===== Barra di ricerca nella nav ===== */
+.nav-search {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.nav-search input[type="search"] {
+    border: none;
+    border-radius: 1.25rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75em;
+    width: 8rem;
+    max-width: 50vw;
+    background-color: rgba(255, 255, 255, 0.92);
+    color: var(--text-color);
+}
+
+.nav-search input[type="search"]:focus {
+    outline: 0.125rem solid var(--primary-color);
+    background-color: #ffffff;
+}
+
+.nav-search button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.7em;
+    margin-top: 0;
+    padding: 0;
+}
+
+.nav-search button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* ===== Sezione "hero" della home: pannello centrato, in armonia con
+   il verde pastello della nav e il bianco della barra di ricerca ===== */
+.hero {
+    text-align: center;
+    max-width: 40rem;
+    margin: 2rem auto 1.5rem;
+    padding: 3rem 2.5rem 2.25rem;
+    background-color: var(--card-bg);
+    border: 0.0625rem solid var(--border-color);
+    border-top: 0.25rem solid var(--nav-color);
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(107, 91, 123, 0.08);
+}
+
+.hero h1 {
+    display: inline-block;
+    font-size: 2.25em;
+    border-bottom-color: var(--primary-color);
+}
+
+.hero .sottotitolo {
+    color: var(--muted-color);
+    font-size: 1.05em;
+    margin-top: -0.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.hero-links li {
+    border-bottom: none;
+    padding: 0;
+}
+
+.hero-links a {
+    display: inline-block;
+    background-color: var(--bg-color);
+    border: 0.0625rem solid var(--border-color);
+    color: var(--dark-color);
+    padding: 0.7rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1em;
+    box-shadow: 0 0.125rem 0.375rem rgba(107, 91, 123, 0.08);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.hero-links a:hover {
+    background-color: var(--nav-color);
+    color: white;
+    text-decoration: none;
+}
+
+.hero-auth {
+    margin-top: 1.75rem;
+    color: var(--muted-color);
 }
 
 /* ===== Liste di navigazione semplici ===== */
@@ -87,13 +207,13 @@ ul.link-list {
 
 ul.link-list li {
     padding: 0.5rem 0;
-    border-bottom: 0.0625rem solid #e0e0e0;
+    border-bottom: 0.0625rem solid var(--border-color);
 }
 
 /* ===== Card per elenchi (festival, film, recensioni): box model ===== */
 .card {
     background-color: var(--card-bg);
-    border: 0.0625rem solid #e0e0e0;
+    border: 0.0625rem solid var(--border-color);
     border-radius: 0.5rem;
     padding: 1rem 1.25rem;
     margin-bottom: 0.9375rem;
@@ -102,7 +222,7 @@ ul.link-list li {
 /* ===== Form ===== */
 form {
     background-color: var(--card-bg);
-    border: 0.0625rem solid #ddd;
+    border: 0.0625rem solid var(--border-color);
     padding: 1.25rem;
     border-radius: 0.5rem;
     margin: 0.9375rem 0;
@@ -125,7 +245,7 @@ select {
     width: 100%;
     padding: 0.5rem 0.625rem;
     margin-top: 0.3125rem;
-    border: 0.0625rem solid #ccc;
+    border: 0.0625rem solid #d8d0dd;
     border-radius: 0.25rem;
     font-size: 0.875em;
 }
@@ -148,16 +268,16 @@ button {
 }
 
 button:hover {
-    background-color: #c73650;
+    background-color: var(--primary-color-hover);
 }
 
 /* ===== Messaggi di errore ===== */
 .errore {
-    background-color: #fdecea;
-    color: #c0392b;
+    background-color: #fbebee;
+    color: #a3556a;
     padding: 0.75rem 1rem;
     border-radius: 0.375rem;
-    border-left: 0.25rem solid #c0392b;
+    border-left: 0.25rem solid #c98da0;
     margin: 0.9375rem 0;
 }
 
@@ -197,11 +317,20 @@ button:hover {
 
     nav.main-nav {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 
-    nav.main-nav a {
-        margin-bottom: 0.5rem;
+    .nav-search input[type="search"] {
+        width: 6.5rem;
+    }
+
+    .hero {
+        padding: 2rem 1.25rem 1.5rem;
+        margin: 1.25rem auto;
+    }
+
+    .hero h1 {
+        font-size: 1.75em;
     }
 
     form {

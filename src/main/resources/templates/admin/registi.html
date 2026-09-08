@@ -10,10 +10,13 @@
 <div class="container">
     <h1>Gestione Registi</h1>
 
+    <p class="errore" th:if="${erroreEliminazione}" th:text="${erroreEliminazione}"></p>
+
     <a th:href="@{/admin/registi/nuovo}">+ Nuovo regista</a>
 
     <div class="card" th:each="regista : ${registi}">
         <span th:text="${regista.nome} + ' ' + ${regista.cognome}">Nome Cognome</span>
+        <p th:text="'Nato il ' + ${#temporals.format(regista.dataNascita, 'dd/MM/yyyy')} + ' — ' + ${regista.nazionalita}">Data di nascita — Nazionalità</p>
         <div class="actions">
             <a th:href="@{/admin/registi/{id}/modifica(id=${regista.id})}">Modifica</a>
             <form th:action="@{/admin/registi/{id}/elimina(id=${regista.id})}" method="post">

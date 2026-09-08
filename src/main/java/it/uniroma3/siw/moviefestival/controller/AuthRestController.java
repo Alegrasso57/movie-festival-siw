@@ -1,55 +1,42 @@
 package it.uniroma3.siw.moviefestival.controller;
 
-import java.util.Map;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import it.uniroma3.siw.moviefestival.authentication.JwtUtils;
-import it.uniroma3.siw.moviefestival.dto.LoginRequestDTO;
-import it.uniroma3.siw.moviefestival.dto.LoginResponseDTO;
-import it.uniroma3.siw.moviefestival.model.Utente;
-import it.uniroma3.siw.moviefestival.service.UtenteService;
+import it.uniroma3.siw.moviefestival.dto.SessionInfoDTO;
 
 /**
- * Login stateless per il frontend React: verifica le credenziali con lo
- * stesso AuthenticationManager usato dal form login di Thymeleaf, e in
- * caso di successo restituisce un JWT invece di creare una sessione HTTP.
+ * Il frontend React non gestisce un proprio login: l'autenticazione avviene
+ * sempre sulla pagina /login del sito (form Thymeleaf classico), che crea
+ * la normale sessione HTTP di Spring Security. Quella sessione è condivisa
+ * anche dalle chiamate a /api/** (vedi SecurityConfig, un'unica catena di
+ * sicurezza per tutta l'applicazione), quindi a React basta chiedere "chi
+ * sono?" per sapere se mostrare le funzionalità riservate agli ADMIN
+ * (ad es. la creazione di un film).
  */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthRestController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UtenteService utenteService;
-    private final JwtUtils jwtUtils;
+    @GetMapping("/me")
+    public SessionInfoDTO sessioneCorrente() {
+        Authentication autenticazione = SecurityContextHolder.getContext().getAuthentication();
 
-    public AuthRestController(AuthenticationManager authenticationManager,
-                               UtenteService utenteService,
-                               JwtUtils jwtUtils) {
-        this.authenticationManager = authenticationManager;
-        this.utenteService = utenteService;
-        this.jwtUtils = jwtUtils;
-    }
+        boolean autenticato = autenticazione != null
+                && autenticazione.isAuthenticated()
+                && !"anonymousUser".equals(autenticazione.getPrincipal());
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO credenziali) {
-
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            credenziali.getUsername(), credenziali.getPassword()));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(401).body(Map.of("errore", "Username o password non validi"));
+        if (!autenticato) {
+            return new SessionInfoDTO(false, null, null);
         }
 
-        Utente utente = utenteService.findByUsername(credenziali.getUsername());
-        String token = jwtUtils.generateToken(utente.getUsername(), utente.getRuolo().name());
+        String ruolo = autenticazione.getAuthorities().stream()
+                .findFirst()
+                .map(Object::toString)
+                .orElse(null);
 
-        return ResponseEntity.ok(new LoginResponseDTO(token, utente.getUsername(), utente.getRuolo().name()));
+        return new SessionInfoDTO(true, autenticazione.getName(), ruolo);
     }
 }

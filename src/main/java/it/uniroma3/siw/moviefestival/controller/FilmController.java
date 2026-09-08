@@ -23,7 +23,7 @@ public class FilmController {
     @GetMapping("/movies")
     public String elencoFilm(Model model) {
         model.addAttribute("films", filmService.findAll());
-        return "movies";
+        return "movies/list";
     }
 
     @GetMapping("/movie/{id}")
@@ -42,6 +42,6 @@ public class FilmController {
             model.addAttribute("username", null);
         }
 
-        return "movieDetail";
+        return "movies/show";
     }
 }

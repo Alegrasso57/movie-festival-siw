@@ -12,12 +12,20 @@
         <a th:href="@{/festivals}">Festival</a>
         <a th:href="@{/movies}">Film</a>
         <a th:href="@{/screenings}">Proiezioni</a>
+            <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
     </nav>
 
     <div class="container">
         <h1 th:text="${festival.nome}">Nome Festival</h1>
         <p th:text="'Città: ' + ${festival.citta}">Città</p>
         <p th:text="'Anno: ' + ${festival.anno}">Anno</p>
+        <p>
+            <span th:text="'Dal ' + ${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')}">Data inizio</span>
+            <span th:text="' al ' + ${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Data fine</span>
+        </p>
         <p th:text="${festival.descrizione}">Descrizione</p>
 
         <h2>Film partecipanti</h2>

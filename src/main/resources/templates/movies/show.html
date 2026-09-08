@@ -12,6 +12,10 @@
         <a th:href="@{/festivals}">Festival</a>
         <a th:href="@{/movies}">Film</a>
         <a th:href="@{/screenings}">Proiezioni</a>
+            <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
     </nav>
 
     <div class="container">
@@ -22,8 +26,12 @@
         <p th:text="'Paese di produzione: ' + ${film.paeseProduzione}">Paese</p>
 
         <h2>Regista</h2>
-        <p th:if="${film.regista != null}"
-           th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</p>
+        <div th:if="${film.regista != null}">
+            <p th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</p>
+            <p th:text="'Nato il ' + ${#temporals.format(film.regista.dataNascita, 'dd/MM/yyyy')} + ' — ' + ${film.regista.nazionalita}">
+                Data di nascita — Nazionalità
+            </p>
+        </div>
 
         <h2>Festival a cui partecipa</h2>
         <div class="card" th:each="festival : ${film.festival}">
@@ -32,8 +40,9 @@
 
         <h2>Proiezioni</h2>
         <div class="card" th:each="proiezione : ${film.proiezioni}">
-            <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}">
-                Data Ora - Sala
+            <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}
+                            + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">
+                Data Ora - Sala (Indirizzo, capienza)
             </span>
         </div>
 

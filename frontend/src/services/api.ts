@@ -1,17 +1,16 @@
 import axios from 'axios'
 
+// Percorso relativo: funziona sia in produzione (l'app React è servita da
+// Spring Boot sotto /app, quindi /api è la stessa origine) sia in sviluppo
+// (il proxy di Vite in vite.config.ts inoltra /api al backend su :8080).
+//
+// withCredentials: true fa sì che il cookie di sessione (JSESSIONID),
+// creato dal login sulla pagina Thymeleaf del sito, venga inviato anche
+// dalle chiamate axios: non serve un token separato per React, l'app
+// riusa la stessa sessione di autenticazione di tutto il resto del sito.
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-})
-
-// Ad ogni richiesta, se esiste un JWT salvato dal login, lo allega
-// come header Authorization. Il backend lo legge in JwtAuthenticationFilter.
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
+  baseURL: '/api',
+  withCredentials: true,
 })
 
 export default api

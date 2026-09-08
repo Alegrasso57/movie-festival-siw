@@ -14,6 +14,7 @@
 
     <div class="card" th:each="festival : ${festivalList}">
         <span th:text="${festival.nome} + ' (' + ${festival.anno} + ')'">Nome (Anno)</span>
+        <p th:text="${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')} + ' — ' + ${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Date</p>
         <div class="actions">
             <a th:href="@{/admin/festival/{id}/modifica(id=${festival.id})}">Modifica</a>
             <form th:action="@{/admin/festival/{id}/elimina(id=${festival.id})}" method="post">

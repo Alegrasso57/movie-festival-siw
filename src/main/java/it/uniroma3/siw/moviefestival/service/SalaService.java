@@ -30,8 +30,28 @@ public class SalaService {
         return salaRepository.save(sala);
     }
 
+    /**
+     * Una proiezione deve sempre avere una sala (relazione obbligatoria,
+     * vedi Proiezione.sala): non possiamo eliminare una sala che ha ancora
+     * proiezioni programmate, altrimenti l'eliminazione fallirebbe a
+     * livello di database con un errore di integrità referenziale
+     * (Whitelabel Error Page). Blocchiamo l'operazione con un messaggio
+     * chiaro per l'admin: vanno eliminate prima quelle proiezioni.
+     */
     @Transactional
     public void deleteById(Long id) {
-        salaRepository.deleteById(id);
+        Sala sala = salaRepository.findById(id).orElse(null);
+        if (sala == null) {
+            return;
+        }
+
+        if (!sala.getProiezioni().isEmpty()) {
+            throw new IllegalStateException(
+                    "Impossibile eliminare la sala '" + sala.getNome() + "': ha ancora "
+                            + sala.getProiezioni().size()
+                            + " proiezioni programmate. Elimina prima quelle proiezioni.");
+        }
+
+        salaRepository.delete(sala);
     }
 }

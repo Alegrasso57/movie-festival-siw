@@ -10,10 +10,13 @@
 <div class="container">
     <h1>Gestione Sale</h1>
 
+    <p class="errore" th:if="${erroreEliminazione}" th:text="${erroreEliminazione}"></p>
+
     <a th:href="@{/admin/sale/nuova}">+ Nuova sala</a>
 
     <div class="card" th:each="sala : ${sale}">
         <span th:text="${sala.nome} + ' (' + ${sala.capienza} + ' posti)'">Nome (capienza)</span>
+        <p th:text="${sala.indirizzo}">Indirizzo</p>
         <div class="actions">
             <a th:href="@{/admin/sale/{id}/modifica(id=${sala.id})}">Modifica</a>
             <form th:action="@{/admin/sale/{id}/elimina(id=${sala.id})}" method="post">
