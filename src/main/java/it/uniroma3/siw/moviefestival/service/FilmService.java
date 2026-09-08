@@ -40,20 +40,6 @@ public class FilmService {
         return filmRepository.save(film);
     }
 
-    /**
-     * Elimina un film insieme a tutto ciò che esiste solo in funzione di lui:
-     * le sue proiezioni e le sue recensioni non avrebbero senso senza il
-     * film a cui si riferiscono, quindi vengono eliminate anche loro.
-     * Il film viene inoltre tolto dall'elenco dei partecipanti di ogni
-     * festival a cui prendeva parte, ma i festival restano: perdono solo
-     * questo film, non vengono eliminati.
-     *
-     * Senza questi passaggi, chiamare semplicemente
-     * filmRepository.deleteById(id) fallisce con un errore di vincolo di
-     * integrità referenziale sul database (le righe di proiezione,
-     * recensione e della tabella di join film_festival puntano ancora a
-     * questo film), che si manifesta come Whitelabel Error Page.
-     */
     @Transactional
     public void deleteById(Long id) {
         Film film = filmRepository.findById(id).orElse(null);

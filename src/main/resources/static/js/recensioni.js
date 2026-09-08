@@ -62,13 +62,23 @@ function ListaRecensioni() {
         setVoto(recensione.voto);
     }
 
+    function formattaData(data) {
+        // Il backend manda la data in formato ISO (yyyy-MM-dd, da
+        // LocalDate.toString()): qui la convertiamo in giorno/mese/anno.
+        if (!data) return '';
+        const [anno, mese, giorno] = data.split('-');
+        return giorno + '/' + mese + '/' + anno;
+    }
+
     return React.createElement('div', null,
-        recensioni.map(r => React.createElement('div', { key: r.id, style: { borderBottom: '1px solid #ccc', marginBottom: '10px' } },
+        recensioni.map(r => React.createElement('div', { key: r.id, style: { borderBottom: '1px solid #ccc', marginBottom: '10px', paddingBottom: '10px' } },
             React.createElement('p', null, 'Voto: ' + r.voto + '/10'),
-            React.createElement('p', null, r.testo),
-            React.createElement('p', null, 'di ' + r.autoreUsername + ' il ' + r.data),
+            React.createElement('p', null,
+                React.createElement('strong', null, r.autoreUsername),
+                ' ha scritto: \'' + r.testo + '\' in data: ' + formattaData(r.data)
+            ),
             username === r.autoreUsername && React.createElement('span', null,
-                React.createElement('button', { onClick: () => iniziaModifica(r) }, 'Modifica'),
+                React.createElement('button', { onClick: () => iniziaModifica(r), style: { marginRight: '0.9rem' } }, 'Modifica'),
                 React.createElement('button', { onClick: () => elimina(r.id) }, 'Elimina')
             )
         )),
