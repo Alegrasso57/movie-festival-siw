@@ -26,8 +26,10 @@
 
     <div class="grid">
     <div class="card" th:each="sala : ${sale}">
-        <span th:text="${sala.nome} + ' (' + ${sala.capienza} + ' posti)'">Nome (capienza)</span>
-        <p th:text="${sala.indirizzo}">Indirizzo</p>
+        <h2 th:text="${sala.nome} + ' (' + ${sala.capienza} + ' posti)'">Nome (capienza)</h2>
+        <ul class="card-details">
+            <li><span th:text="'Situata in ' + ${sala.indirizzo}">Indirizzo</span></li>
+        </ul>
         <div class="actions">
             <a th:href="@{/admin/sale/{id}/modifica(id=${sala.id})}">Modifica</a>
             <form th:action="@{/admin/sale/{id}/elimina(id=${sala.id})}" method="post">

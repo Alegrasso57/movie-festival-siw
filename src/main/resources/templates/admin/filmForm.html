@@ -43,10 +43,11 @@
             </select>
         </label>
 
-        <button type="submit">Salva</button>
+        <div class="form-actions">
+            <button type="submit">Salva</button>
+            <a th:href="@{/admin/film}" class="btn-annulla">Annulla</a>
+        </div>
     </form>
-
-    <p><a th:href="@{/admin/film}">Annulla</a></p>
 </div>
 </body>
 </html>

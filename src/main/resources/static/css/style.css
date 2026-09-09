@@ -48,6 +48,13 @@ body {
     padding: 1.875rem 1.25rem;
 }
 
+/* Le pagine "centrate" (login, registrazione, liste e form di
+   amministrazione) non hanno un hero sotto la nav: meno spazio sopra il
+   titolo, altrimenti resta un vuoto eccessivo. */
+.container.pagina-centrata {
+    padding-top: 0.75rem;
+}
+
 /* ===== Intestazioni: serif per un tono più editoriale/elegante ===== */
 h1 {
     font-family: Georgia, 'Times New Roman', serif;
@@ -170,7 +177,7 @@ nav.main-nav a:hover {
    originale, "a bandiera", invece del solito box simmetrico.
    ========================================================================= */
 .hero {
-    text-align: left;
+    text-align: center;
     max-width: 46rem;
     margin: 2.25rem auto 2rem;
     padding: 2.25rem 2.5rem;
@@ -193,6 +200,10 @@ nav.main-nav a:hover {
     margin-top: -0.5rem;
     margin-bottom: 1.75rem;
     max-width: 34rem;
+
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 /* Pulsanti del hero: contorno oro invece di sfondo pieno, per non ripetere
@@ -201,7 +212,7 @@ nav.main-nav a:hover {
 .hero-links {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0.9rem;
     list-style: none;
     padding: 0;
@@ -320,6 +331,8 @@ ul.link-list a:hover {
    scala ridotta) invece del bordo superiore usato in precedenza; leggero
    effetto di risalto al passaggio del mouse tramite :hover ===== */
 .card {
+    display: flex;
+    flex-direction: column;
     background-color: var(--card-bg);
     border: 0.0625rem solid var(--border-color);
     border-left: 0.3rem solid var(--oro);
@@ -334,11 +347,72 @@ ul.link-list a:hover {
     font-size: 1.15em;
 }
 
+/* Nome film/festival come link dentro il titolo: l'elemento <a> ha un suo
+   font-weight diretto (vedi regola "a" più sopra) che altrimenti vince
+   sul grassetto ereditato dall'h2, quindi va impostato qui esplicitamente. */
+.card h2 a {
+    font-weight: 700;
+}
+
 /* I dati "in evidenza" dentro una card (titoli senza h2, orari, sale...)
    condividono lo stesso colore vino per farli risaltare sul testo normale */
 .card span {
     color: var(--vino);
     font-weight: 600;
+}
+
+/* Dettagli di una card sotto forma di elenco puntato (invece di righe
+   separate da un trattino): più leggibile quando i campi sono tre o
+   quattro, e il pallino dorato richiama la costa della card. */
+.card-details {
+    list-style: disc;
+    padding-left: 1.2rem;
+    margin: 0.35rem 0 0;
+}
+
+.card-details li {
+    margin-bottom: 0.25rem;
+}
+
+.card-details li::marker {
+    color: var(--oro);
+}
+
+.card-details li:last-child {
+    margin-bottom: 0;
+}
+
+/* Box dei dettagli in cima a una pagina di dettaglio (es. festival): stessa
+   costa dorata e stesso sfondo delle card, ma centrato e più arioso, per
+   mettere in risalto le informazioni principali senza sembrare un elenco. */
+.dettaglio-info {
+    max-width: 34rem;
+    margin: 1.5rem auto 2.25rem;
+    padding: 1.75rem 2.25rem;
+    background-color: var(--card-bg);
+    border: 0.0625rem solid var(--border-color);
+    border-left: 0.35rem solid var(--oro);
+    border-radius: 0 1rem 1rem 0;
+    box-shadow: 0 0.4rem 1.2rem rgba(110, 63, 82, 0.08);
+    text-align: center;
+}
+
+.dettaglio-info p {
+    font-size: 1.05em;
+    line-height: 1.7;
+    margin: 0.5rem 0;
+}
+
+.dettaglio-info span {
+    color: var(--vino);
+    font-weight: 600;
+}
+
+.dettaglio-info .descrizione {
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 0.0625rem solid var(--border-color);
+    color: var(--text-color);
 }
 
 /* ===== Form: stessa costa dorata delle card ma in alto, per differenziare
@@ -435,13 +509,18 @@ button:hover {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 0.75rem;
+    gap: 1rem;
+    /* margin-top:auto (dentro .card, ora Flexbox verticale) spinge i
+       pulsanti sempre in fondo alla card, così restano allineati tra loro
+       anche quando un titolo va a capo su due righe e un altro no */
+    margin-top: auto;
+    padding-top: 0.75rem;
 }
 
 /* Il form che contiene "Elimina" (ed eventuale "Segna come completata")
    non deve apparire come una card bianca a sé stante: azzeriamo lo stile
    generico di "form" solo dentro .actions */
+
 .actions form {
     background: none;
     border: none;
@@ -450,15 +529,34 @@ button:hover {
     max-width: none;
 }
 
-/* "Modifica" è un bottone verde (azione "sicura") */
-.actions a {
-    display: inline-block;
-    background-color: var(--verde-azione);
-    color: white;
-    padding: 0.55rem 1.15rem;
+/* Stile comune per Modifica ed Elimina */
+.actions a,
+.actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 3rem;
+    min-width: 7.5rem;
+    padding: 0 1.15rem;
+
     border-radius: 2rem;
-    font-weight: 600;
+
+    font-family: inherit;
     font-size: 0.85em;
+    font-weight: 600;
+    line-height: 1;
+
+    color: white;
+
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* MODIFICA */
+.actions a {
+    background-color: var(--verde-azione);
+    border: none;
 }
 
 .actions a:hover {
@@ -466,23 +564,44 @@ button:hover {
     text-decoration: none;
 }
 
-.actions button {
-    padding: 0.55rem 1.15rem;
-    font-size: 0.85em;
-}
-
-/* "Elimina" resta rosa/rosso (bottone generico) con un bordo che lo marca
-   come azione distruttiva, più uno sfondo lievemente tinto per distinguerlo
-   ancora meglio da "Segna come completata". Selettore sull'attributo
-   action del form (finisce sempre con /elimina) invece di una classe in
-   ogni template. */
+/* ELIMINA */
 .actions form[action$="elimina"] button {
     background-color: var(--bordo-elimina);
-    border: 0.125rem solid var(--bordo-elimina);
+    border: none;
 }
 
 .actions form[action$="elimina"] button:hover {
     background-color: #8c384a;
+}
+/* ===== Coppia Salva/Annulla nei form di amministrazione: stesso tipo di
+   pulsante (pillola), vicini e centrati nel box (Flexbox) ===== */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.form-actions button {
+    margin-top: 0;
+}
+
+.btn-annulla {
+    display: inline-block;
+    background-color: var(--border-color);
+    color: var(--text-color);
+    padding: 0.65rem 1.4rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.875em;
+}
+
+.btn-annulla:hover {
+    background-color: var(--muted-color);
+    color: white;
+    text-decoration: none;
 }
 
 /* ===== Pagine centrate: login, registrazione, liste e form di

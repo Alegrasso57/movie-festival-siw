@@ -45,10 +45,11 @@
         </label>
         <small>Tieni premuto Ctrl (o Cmd su Mac) per selezionare più film contemporaneamente.</small>
 
-        <button type="submit">Salva</button>
+        <div class="form-actions">
+            <button type="submit">Salva</button>
+            <a th:href="@{/admin/festival}" class="btn-annulla">Annulla</a>
+        </div>
     </form>
-
-    <p><a th:href="@{/admin/festival}">Annulla</a></p>
 </div>
 </body>
 </html>

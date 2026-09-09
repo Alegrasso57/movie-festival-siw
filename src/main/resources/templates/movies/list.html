@@ -26,7 +26,10 @@
             <h2>
                 <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo</a>
             </h2>
-            <p th:text="${film.genere} + ' - ' + ${film.anno}">Genere - Anno</p>
+            <ul class="card-details">
+                <li><span th:text="${film.genere}">Genere</span></li>
+                <li><span th:text="${film.anno}">Anno</span></li>
+            </ul>
         </div>
         </div>
 

@@ -29,10 +29,11 @@
         <label>Nome: <input type="text" name="nome" th:value="${sala.nome}"></label>
         <label>Indirizzo: <input type="text" name="indirizzo" th:value="${sala.indirizzo}"></label>
         <label>Capienza: <input type="number" name="capienza" th:value="${sala.capienza}"></label>
-        <button type="submit">Salva</button>
+        <div class="form-actions">
+            <button type="submit">Salva</button>
+            <a th:href="@{/admin/sale}" class="btn-annulla">Annulla</a>
+        </div>
     </form>
-
-    <p><a th:href="@{/admin/sale}">Annulla</a></p>
 </div>
 </body>
 </html>

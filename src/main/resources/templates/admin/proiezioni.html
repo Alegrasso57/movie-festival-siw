@@ -26,9 +26,14 @@
          ProiezioneRepository.findAllByOrderByDataAscOraAsc) -->
     <div class="grid">
     <div class="card" th:each="proiezione : ${proiezioniList}">
-        <span th:text="${proiezione.film.titolo} + ' — ' + ${proiezione.festival.nome} + ' — ' + ${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora} + ' — ' + ${proiezione.sala.nome} + ' [' + ${proiezione.stato} + ']'">
-            Dettagli proiezione
-        </span>
+        <ul class="card-details">
+            <li><span th:text="${proiezione.film.titolo}">Film</span></li>
+            <li><span th:text="${proiezione.festival.nome}">Festival</span></li>
+            <li><span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')}">Data</span></li>
+            <li><span th:text="'Ore ' + ${proiezione.ora}">Ora</span></li>
+            <li><span th:text="${proiezione.sala.nome}">Sala</span></li>
+            <li><span th:text="${proiezione.stato}">Stato</span></li>
+        </ul>
         <div class="actions">
             <a th:href="@{/admin/proiezioni/{id}/modifica(id=${proiezione.id})}">Modifica</a>
             <form th:if="${proiezione.stato.name() == 'SCHEDULED'}"

@@ -26,8 +26,10 @@
             <h2>
                 <a th:href="@{/festival/{id}(id=${festival.id})}" th:text="${festival.nome}">Nome Festival</a>
             </h2>
-            <p th:text="${festival.citta} + ' - ' + ${festival.anno}">Città - Anno</p>
-            <p th:text="${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')} + ' — ' + ${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Date</p>
+            <ul class="card-details">
+                <li><span th:text="${festival.citta} + ', ' + ${festival.anno}">Città, Anno</span></li>
+                <li><span th:text="'da ' + ${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')} + ' a ' + ${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Periodo</span></li>
+            </ul>
         </div>
         </div>
 

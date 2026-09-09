@@ -23,15 +23,15 @@
 
         <div class="grid">
         <div class="card" th:each="proiezione : ${proiezioni}">
-            <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
-            —
-            <span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora}">Data e ora</span>
-            —
-            <span th:text="${proiezione.sala.nome} + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">Sala (indirizzo, capienza)</span>
-            —
-            <span th:text="${proiezione.stato}">Stato</span>
-            —
-            <a th:href="@{/festival/{id}(id=${proiezione.festival.id})}" th:text="${proiezione.festival.nome}">Festival</a>
+            <h2>
+                <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
+            </h2>
+            <ul class="card-details">
+                <li><span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora}">Data e ora</span></li>
+                <li><span th:text="${proiezione.sala.nome} + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">Sala (indirizzo, capienza)</span></li>
+                <li><span th:text="${proiezione.stato}">Stato</span></li>
+                <li><a th:href="@{/festival/{id}(id=${proiezione.festival.id})}" th:text="${proiezione.festival.nome}">Festival</a></li>
+            </ul>
         </div>
         </div>
 

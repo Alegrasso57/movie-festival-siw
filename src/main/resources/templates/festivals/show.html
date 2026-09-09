@@ -20,13 +20,13 @@
 
     <div class="container pagina-centrata">
         <h1 th:text="${festival.nome}">Nome Festival</h1>
-        <p th:text="'Città: ' + ${festival.citta}">Città</p>
-        <p th:text="'Anno: ' + ${festival.anno}">Anno</p>
-        <p>
-            <span th:text="'Dal ' + ${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')}">Data inizio</span>
-            <span th:text="' al ' + ${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Data fine</span>
-        </p>
-        <p th:text="${festival.descrizione}">Descrizione</p>
+
+        <div class="dettaglio-info">
+            <p>Città: <span th:text="${festival.citta}">Città</span></p>
+            <p>Anno: <span th:text="${festival.anno}">Anno</span></p>
+            <p>Dal <span th:text="${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')}">Data inizio</span> al <span th:text="${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Data fine</span></p>
+            <p class="descrizione" th:text="${festival.descrizione}">Descrizione</p>
+        </div>
 
         <h2>Film partecipanti</h2>
         <div class="card" th:each="film : ${festival.film}">
@@ -34,14 +34,17 @@
         </div>
 
         <h2>Proiezioni</h2>
+        <div class="grid">
         <div class="card" th:each="proiezione : ${festival.proiezioni}">
-            <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
-            —
-            <span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora}">Data e ora</span>
-            —
-            <span th:text="${proiezione.sala.nome}">Sala</span>
-            —
-            <span th:text="${proiezione.stato}">Stato</span>
+            <h2>
+                <a th:href="@{/movie/{id}(id=${proiezione.film.id})}" th:text="${proiezione.film.titolo}">Film</a>
+            </h2>
+            <ul class="card-details">
+                <li><span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora}">Data e ora</span></li>
+                <li><span th:text="${proiezione.sala.nome}">Sala</span></li>
+                <li><span th:text="${proiezione.stato}">Stato</span></li>
+            </ul>
+        </div>
         </div>
 
         <p><a th:href="@{/festivals}">Torna all'elenco</a></p>

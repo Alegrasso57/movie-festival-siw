@@ -61,12 +61,13 @@
             <input type="time" name="ora" th:value="${proiezione != null ? proiezione.ora : null}">
         </label>
 
-        <button type="submit" th:text="${proiezione != null ? 'Salva modifiche' : 'Programma proiezione'}">
-            Programma proiezione
-        </button>
+        <div class="form-actions">
+            <button type="submit" th:text="${proiezione != null ? 'Salva modifiche' : 'Programma proiezione'}">
+                Programma proiezione
+            </button>
+            <a th:href="@{/admin/proiezioni}" class="btn-annulla">Annulla</a>
+        </div>
     </form>
-
-    <p><a th:href="@{/admin/proiezioni}">Annulla</a></p>
 </div>
 </body>
 </html>

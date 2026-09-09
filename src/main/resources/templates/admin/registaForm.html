@@ -30,10 +30,11 @@
         <label>Cognome: <input type="text" name="cognome" th:value="${regista.cognome}"></label>
         <label>Data di nascita: <input type="date" name="dataNascita" th:value="${regista.dataNascita}"></label>
         <label>Nazionalità: <input type="text" name="nazionalita" th:value="${regista.nazionalita}"></label>
-        <button type="submit">Salva</button>
+        <div class="form-actions">
+            <button type="submit">Salva</button>
+            <a th:href="@{/admin/registi}" class="btn-annulla">Annulla</a>
+        </div>
     </form>
-
-    <p><a th:href="@{/admin/registi}">Annulla</a></p>
 </div>
 </body>
 </html>

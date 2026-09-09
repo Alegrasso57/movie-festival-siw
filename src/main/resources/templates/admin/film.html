@@ -24,7 +24,10 @@
 
     <div class="grid">
     <div class="card" th:each="film : ${filmList}">
-        <span th:text="${film.titolo} + ' (' + ${film.anno} + ')'">Titolo (Anno)</span>
+        <h2 th:text="${film.titolo}">Titolo</h2>
+        <ul class="card-details">
+            <li><span th:text="${film.anno}">Anno</span></li>
+        </ul>
         <div class="actions">
             <a th:href="@{/admin/film/{id}/modifica(id=${film.id})}">Modifica</a>
             <form th:action="@{/admin/film/{id}/elimina(id=${film.id})}" method="post">
