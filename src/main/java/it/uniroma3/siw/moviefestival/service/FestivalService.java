@@ -25,12 +25,6 @@ public class FestivalService {
 
     @Transactional(readOnly = true)
     public List<Festival> findAll() {
-        // Come per FilmService.findAll(): usa la query con JOIN FETCH
-        // invece del semplice findAll(), cosi la collezione "film" (una
-        // @ManyToMany, LAZY di default) viene caricata subito insieme ai
-        // festival in un'unica query, evitando l'N+1 se in futuro si
-        // accede a festival.getFilm() per ognuno (es. per contarli in una
-        // pagina di elenco).
         return festivalRepository.findAllWithFilmJoinFetch();
     }
 
@@ -44,22 +38,6 @@ public class FestivalService {
         return festivalRepository.save(festival);
     }
 
-    /**
-     * Salva i dati del festival e allinea i film partecipanti alla lista
-     * scelta nel form (filmIds).
-     *
-     * Nota importante sul mapping JPA: la relazione ManyToMany tra Film e
-     * Festival è mappata con la tabella di join sul lato Film
-     * (@JoinTable in Film.festival). Questo rende Film il lato
-     * "proprietario" della relazione: Hibernate scrive la tabella di join
-     * SOLO quando si modifica quella collezione. Festival.film è invece
-     * dichiarata con mappedBy — è il lato "inverso", di sola lettura ai
-     * fini della persistenza: assegnare una lista a festival.setFilm(...) e
-     * salvare il festival non scrive nulla nella tabella di join (bug che
-     * causava "Film partecipanti" sempre vuoto). Per aggiornare
-     * l'associazione bisogna quindi intervenire sulla collezione
-     * Film.festival di ciascun film coinvolto.
-     */
     @Transactional
     public Festival save(Festival datiFestival, List<Long> filmIds) {
 
@@ -84,7 +62,6 @@ public class FestivalService {
                 .map(Film::getId)
                 .collect(Collectors.toSet());
 
-        // Aggiunge il festival ai film appena selezionati che non lo avevano ancora
         for (Long idFilm : idFilmDesiderati) {
             if (!idFilmAttuali.contains(idFilm)) {
                 Film film = filmRepository.findById(idFilm).orElse(null);
@@ -95,7 +72,6 @@ public class FestivalService {
             }
         }
 
-        // Toglie il festival dai film che erano selezionati e ora non lo sono più
         for (Film film : new ArrayList<>(festival.getFilm())) {
             if (!idFilmDesiderati.contains(film.getId())) {
                 film.getFestival().remove(festival);
