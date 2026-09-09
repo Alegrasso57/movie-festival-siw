@@ -36,6 +36,19 @@ public class UtenteService {
     @Transactional
     public Utente registra(String username, String passwordInChiaro) {
 
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Lo username è obbligatorio");
+        }
+        if (username.trim().length() < 3) {
+            throw new IllegalArgumentException("Lo username deve avere almeno 3 caratteri");
+        }
+        if (passwordInChiaro == null || passwordInChiaro.isBlank()) {
+            throw new IllegalArgumentException("La password è obbligatoria");
+        }
+        if (passwordInChiaro.length() < 6) {
+            throw new IllegalArgumentException("La password deve avere almeno 6 caratteri");
+        }
+
         Utente esistente = utenteRepository.findByUsername(username).orElse(null);
         if (esistente != null) {
             throw new IllegalStateException("Username già in uso");

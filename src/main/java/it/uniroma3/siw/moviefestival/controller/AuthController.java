@@ -34,7 +34,7 @@ public class AuthController {
         try {
             utenteService.registra(username, password);
             return "redirect:/login";
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             model.addAttribute("errore", e.getMessage());
             return "register";
         }

@@ -61,20 +61,4 @@ public class FilmService {
         filmRepository.delete(film);
     }
 
-    // Metodi per l'analisi sperimentale delle strategie di fetch (sezione 8.2)
-
-    @Transactional(readOnly = true)
-    public List<Film> findAllLazy() {
-        return filmRepository.findAllLazy();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Film> findAllWithRegistaJoinFetch() {
-        return filmRepository.findAllWithRegistaJoinFetch();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Film> findAllWithRegistaEntityGraph() {
-        return filmRepository.findAllWithRegistaEntityGraph();
-    }
 }

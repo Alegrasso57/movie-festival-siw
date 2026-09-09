@@ -25,7 +25,13 @@ public class FestivalService {
 
     @Transactional(readOnly = true)
     public List<Festival> findAll() {
-        return festivalRepository.findAll();
+        // Come per FilmService.findAll(): usa la query con JOIN FETCH
+        // invece del semplice findAll(), cosi la collezione "film" (una
+        // @ManyToMany, LAZY di default) viene caricata subito insieme ai
+        // festival in un'unica query, evitando l'N+1 se in futuro si
+        // accede a festival.getFilm() per ognuno (es. per contarli in una
+        // pagina di elenco).
+        return festivalRepository.findAllWithFilmJoinFetch();
     }
 
     @Transactional(readOnly = true)
@@ -105,20 +111,4 @@ public class FestivalService {
         festivalRepository.deleteById(id);
     }
 
-    // Metodi per l'analisi sperimentale delle strategie di fetch (sezione 8.2)
-
-    @Transactional(readOnly = true)
-    public List<Festival> findAllLazy() {
-        return festivalRepository.findAllLazy();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Festival> findAllWithFilmJoinFetch() {
-        return festivalRepository.findAllWithFilmJoinFetch();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Festival> findAllWithFilmEntityGraph() {
-        return festivalRepository.findAllWithFilmEntityGraph();
-    }
 }
