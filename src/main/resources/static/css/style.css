@@ -368,6 +368,7 @@ ul.link-list a:hover {
     list-style: disc;
     padding-left: 1.2rem;
     margin: 0.35rem 0 0;
+    text-align: left;
 }
 
 .card-details li {
@@ -380,6 +381,39 @@ ul.link-list a:hover {
 
 .card-details li:last-child {
     margin-bottom: 0;
+}
+
+/* Elenco di checkbox per una selezione multipla (film partecipanti a un
+   festival): alternativa esplicita al <select multiple> con Ctrl/Cmd,
+   stesso principio (più valori con lo stesso "name" nel form) ma senza
+   bisogno di spiegare la combinazione di tasti. */
+.checkbox-list {
+    max-width: 22rem;
+    margin: 0.5rem auto 0;
+    padding: 1rem 1.25rem;
+    background-color: var(--card-bg);
+    border: 0.0625rem solid var(--border-color);
+    border-left: 0.3rem solid var(--oro);
+    border-radius: 0 0.75rem 0.75rem 0;
+    text-align: left;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+}
+
+.checkbox-item:last-child {
+    margin-bottom: 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 1.15rem;
+    height: 1.15rem;
+    accent-color: var(--vino);
 }
 
 /* Box dei dettagli in cima a una pagina di dettaglio (es. festival): stessa
@@ -413,6 +447,47 @@ ul.link-list a:hover {
     padding-top: 1.1rem;
     border-top: 0.0625rem solid var(--border-color);
     color: var(--text-color);
+}
+
+.dettaglio-info h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.35em;
+}
+
+/* Sfondo per la sezione Recensioni: il componente React monta dentro
+   questo stesso div (id="recensioni-root", vedi recensioni.js) senza
+   sostituirlo, quindi basta stilare il contenitore per dare a tutto il
+   blocco (voto, testo, pulsanti, form) lo stesso trattamento a "box"
+   delle altre sezioni di dettaglio. */
+#recensioni-root {
+    max-width: 40rem;
+    margin: 1.25rem auto 0;
+    text-align: left;
+}
+
+/* Box della lista recensioni: stessa costa dorata delle altre sezioni di
+   dettaglio, ma separata dal form sottostante (che ha già il proprio box
+   dalla regola generica "form {}" più sopra) invece di contenerlo. */
+.recensioni-lista {
+    padding: 1.5rem 1.75rem;
+    background-color: var(--card-bg);
+    border: 0.0625rem solid var(--border-color);
+    border-left: 0.35rem solid var(--oro);
+    border-radius: 0 1rem 1rem 0;
+    box-shadow: 0 0.4rem 1.2rem rgba(110, 63, 82, 0.08);
+    margin-bottom: 1.25rem;
+}
+
+.recensione-item {
+    border-bottom: 0.0625rem solid var(--border-color);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.recensione-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 /* ===== Form: stessa costa dorata delle card ma in alto, per differenziare
@@ -617,7 +692,7 @@ button:hover {
 .pagina-centrata form {
     margin-left: auto;
     margin-right: auto;
-    text-align: left;
+    text-align: center;
 }
 
 .pagina-centrata label {

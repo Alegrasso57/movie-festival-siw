@@ -71,17 +71,19 @@ function ListaRecensioni() {
     }
 
     return React.createElement('div', null,
-        recensioni.map(r => React.createElement('div', { key: r.id, style: { borderBottom: '1px solid #ccc', marginBottom: '10px', paddingBottom: '10px' } },
-            React.createElement('p', null, 'Voto: ' + r.voto + '/10'),
-            React.createElement('p', null,
-                React.createElement('strong', null, r.autoreUsername),
-                ' ha scritto: \'' + r.testo + '\' in data: ' + formattaData(r.data)
-            ),
-            username === r.autoreUsername && React.createElement('span', null,
-                React.createElement('button', { onClick: () => iniziaModifica(r), style: { marginRight: '0.9rem' } }, 'Modifica'),
-                React.createElement('button', { onClick: () => elimina(r.id) }, 'Elimina')
-            )
-        )),
+        recensioni.length > 0 && React.createElement('div', { className: 'recensioni-lista' },
+            recensioni.map(r => React.createElement('div', { key: r.id, className: 'recensione-item' },
+                React.createElement('p', null, 'Voto: ' + r.voto + '/10'),
+                React.createElement('p', null,
+                    React.createElement('strong', null, r.autoreUsername),
+                    ' ha scritto: \'' + r.testo + '\' in data: ' + formattaData(r.data)
+                ),
+                username === r.autoreUsername && React.createElement('span', null,
+                    React.createElement('button', { onClick: () => iniziaModifica(r), style: { marginRight: '0.9rem' } }, 'Modifica'),
+                    React.createElement('button', { onClick: () => elimina(r.id) }, 'Elimina')
+                )
+            ))
+        ),
         username
             ? React.createElement('form', { onSubmit: inviaRecensione },
                 React.createElement('h3', null, modificaId ? 'Modifica la tua recensione' : 'Scrivi una recensione'),

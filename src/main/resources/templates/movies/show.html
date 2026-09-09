@@ -20,17 +20,21 @@
 
     <div class="container pagina-centrata">
         <h1 th:text="${film.titolo}">Titolo</h1>
-        <p th:text="'Anno: ' + ${film.anno}">Anno</p>
-        <p th:text="'Durata: ' + ${film.durata} + ' minuti'">Durata</p>
-        <p th:text="'Genere: ' + ${film.genere}">Genere</p>
-        <p th:text="'Paese di produzione: ' + ${film.paeseProduzione}">Paese</p>
+
+        <div class="dettaglio-info">
+            <p>Anno: <span th:text="${film.anno}">Anno</span></p>
+            <p>Durata: <span th:text="${film.durata} + ' minuti'">Durata</span></p>
+            <p>Genere: <span th:text="${film.genere}">Genere</span></p>
+            <p>Paese di produzione: <span th:text="${film.paeseProduzione}">Paese</span></p>
+        </div>
 
         <h2>Regista</h2>
-        <div th:if="${film.regista != null}">
-            <p th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</p>
-            <p th:text="'Nato il ' + ${#temporals.format(film.regista.dataNascita, 'dd/MM/yyyy')} + ' — ' + ${film.regista.nazionalita}">
-                Data di nascita — Nazionalità
-            </p>
+        <div th:if="${film.regista != null}" class="dettaglio-info">
+            <h2 th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome Regista</h2>
+            <ul class="card-details">
+                <li><span th:text="'Data di nascita: ' + ${#temporals.format(film.regista.dataNascita, 'dd/MM/yyyy')}">Data di nascita</span></li>
+                <li><span th:text="'Nazionalità: ' + ${film.regista.nazionalita}">Nazionalità</span></li>
+            </ul>
         </div>
 
         <h2>Festival a cui partecipa</h2>
@@ -43,10 +47,11 @@
         <h2>Proiezioni</h2>
         <div class="grid">
         <div class="card" th:each="proiezione : ${film.proiezioni}">
-            <span th:text="${proiezione.data} + ' ore ' + ${proiezione.ora} + ' - ' + ${proiezione.sala.nome}
-                            + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">
-                Data Ora - Sala (Indirizzo, capienza)
-            </span>
+            <ul class="card-details">
+                <li><span th:text="${#temporals.format(proiezione.data, 'dd/MM/yyyy')} + ' ore ' + ${proiezione.ora}">Data e ora</span></li>
+                <li><span th:text="${proiezione.sala.nome} + ' (' + ${proiezione.sala.indirizzo} + ', ' + ${proiezione.sala.capienza} + ' posti)'">Sala (indirizzo, capienza)</span></li>
+                <li><span th:text="${proiezione.stato}">Stato</span></li>
+            </ul>
         </div>
         </div>
 

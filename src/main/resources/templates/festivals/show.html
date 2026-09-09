@@ -29,8 +29,10 @@
         </div>
 
         <h2>Film partecipanti</h2>
+        <div class="grid">
         <div class="card" th:each="film : ${festival.film}">
             <a th:href="@{/movie/{id}(id=${film.id})}" th:text="${film.titolo}">Titolo film</a>
+        </div>
         </div>
 
         <h2>Proiezioni</h2>

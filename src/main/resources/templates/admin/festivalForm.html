@@ -33,17 +33,14 @@
         <label>Data fine: <input type="date" name="dataFine" th:value="${festival.dataFine}"></label>
         <label>Descrizione: <textarea name="descrizione" th:text="${festival.descrizione}"></textarea></label>
 
-        <label>Film partecipanti:
-            <select name="filmIds" multiple size="5">
-                <option th:each="film : ${filmDisponibili}"
-                        th:value="${film.id}"
-                        th:text="${film.titolo}"
-                        th:selected="${festival.film != null and festival.film.contains(film)}">
-                    Titolo film
-                </option>
-            </select>
-        </label>
-        <small>Tieni premuto Ctrl (o Cmd su Mac) per selezionare più film contemporaneamente.</small>
+        <label>Film partecipanti:</label>
+        <div class="checkbox-list">
+            <label class="checkbox-item" th:each="film : ${filmDisponibili}">
+                <input type="checkbox" name="filmIds" th:value="${film.id}"
+                       th:checked="${festival.film != null and festival.film.contains(film)}">
+                <span th:text="${film.titolo}">Titolo film</span>
+            </label>
+        </div>
 
         <div class="form-actions">
             <button type="submit">Salva</button>
