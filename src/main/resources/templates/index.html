@@ -8,14 +8,12 @@
 </head>
 <body>
     <nav class="main-nav">
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/}">Home</a> 
+        <a th:href="@{/festivals}">Festival</a> 
         <a th:href="@{/movies}">Film</a> 
         <a th:href="@{/screenings}">Proiezioni</a>
-        <form class="nav-search" th:action="@{/app}" method="get">
-            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
-            <button type="submit" aria-label="Cerca">&#128269;</button>
-        </form>
+        <a th:href="@{/registi}">Registi</a>
+        <a th:href="@{/sale}">Sale</a>
     </nav>
 
     <div class="container pagina-centrata">
@@ -27,6 +25,8 @@
                 <li><a th:href="@{/festivals}">Elenco festival</a></li>
                 <li><a th:href="@{/movies}">Elenco film</a></li>
                 <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
+                <li><a th:href="@{/registi}">Elenco Registi</a> </li>
+                <li><a th:href="@{/sale}">Elenco Sale</a></li>
             </ul>
 
             <div class="hero-auth" sec:authorize="!isAuthenticated()">

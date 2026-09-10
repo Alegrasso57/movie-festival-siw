@@ -12,14 +12,17 @@
         <a th:href="@{/festivals}">Festival</a>
         <a th:href="@{/movies}">Film</a>
         <a th:href="@{/screenings}">Proiezioni</a>
-            <form class="nav-search" th:action="@{/app}" method="get">
-            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
-            <button type="submit" aria-label="Cerca">&#128269;</button>
-        </form>
+        <a th:href="@{/registi}">Registi</a>
+        <a th:href="@{/sale}">Sale</a>
     </nav>
 
     <div class="container pagina-centrata">
         <h1>Film</h1>
+
+        <form class="nav-search" th:action="@{/app}" method="get">
+            <input type="search" name="q" placeholder="Cerca film, proiezioni...">
+            <button type="submit" aria-label="Cerca">&#128269;</button>
+        </form>
 
         <div class="grid">
         <div class="card" th:each="film : ${films}">

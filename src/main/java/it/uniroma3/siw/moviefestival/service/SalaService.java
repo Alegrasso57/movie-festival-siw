@@ -25,6 +25,16 @@ public class SalaService {
         return salaRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public long count() {
+        return salaRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Sala> cerca(String nome) {
+        return salaRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
     @Transactional
     public Sala save(Sala sala) {
         return salaRepository.save(sala);

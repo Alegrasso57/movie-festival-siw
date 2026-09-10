@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Elenco Festival</title>
+    <title>Elenco Registi</title>
 </head>
 <body>
     <nav class="main-nav">
@@ -17,28 +17,24 @@
     </nav>
 
     <div class="container pagina-centrata">
-        <h1>Festival cinematografici</h1>
+        <h1>Registi</h1>
 
-        <form class="nav-search" th:action="@{/festivals}" method="get">
-            <input type="search" name="nome" placeholder="Cerca per nome festival..." th:value="${nome}">
+        <form class="nav-search" th:action="@{/registi}" method="get">
+            <input type="search" name="cognome" placeholder="Cerca per cognome..." th:value="${cognome}">
             <button type="submit" aria-label="Cerca">&#128269;</button>
         </form>
 
         <div class="grid">
-        <div class="card" th:each="festival : ${festivals}">
-            <h2>
-                <a th:href="@{/festival/{id}(id=${festival.id})}" th:text="${festival.nome}">Nome Festival</a>
-            </h2>
+        <div class="card" th:each="regista : ${registi}">
+            <h2 th:text="${regista.nome} + ' ' + ${regista.cognome}">Nome Cognome</h2>
             <ul class="card-details">
-                <li><span th:text="${festival.citta} + ', ' + ${festival.anno}">Città, Anno</span></li>
-                <li><span th:text="'da ' + ${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')} + ' a ' + ${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">Periodo</span></li>
+                <li><span th:text="'Data di nascita: ' + ${#temporals.format(regista.dataNascita, 'dd/MM/yyyy')}">Data di nascita</span></li>
+                <li><span th:text="'Nazionalità: ' + ${regista.nazionalita}">Nazionalità</span></li>
             </ul>
-            
         </div>
         </div>
 
         <p><a th:href="@{/}">Torna alla home</a></p>
-        
     </div>
 </body>
 </html>

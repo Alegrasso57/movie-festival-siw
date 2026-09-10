@@ -5,8 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import it.uniroma3.siw.moviefestival.model.Festival;
 import it.uniroma3.siw.moviefestival.model.Film;
 import it.uniroma3.siw.moviefestival.repository.FestivalRepository;
@@ -31,6 +33,16 @@ public class FestivalService {
     @Transactional(readOnly = true)
     public Festival findById(Long id) {
         return festivalRepository.findById(id).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public long count() {
+        return festivalRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Festival> cerca(String nome) {
+        return festivalRepository.findByNomeContainingIgnoreCase(nome);
     }
 
     @Transactional
@@ -86,5 +98,6 @@ public class FestivalService {
     public void deleteById(Long id) {
         festivalRepository.deleteById(id);
     }
+
 
 }

@@ -16,4 +16,6 @@ public interface ProiezioneRepository extends JpaRepository<Proiezione, Long> {
     boolean existsBySalaAndDataAndOraAndIdNot(Sala sala, LocalDate data, LocalTime ora, Long id);
 
     List<Proiezione> findAllByOrderByDataAscOraAsc();
+
+    List<Proiezione> findByFilm_TitoloContainingIgnoreCaseOrderByDataAscOraAsc(String titoloFilm);
 }

@@ -43,6 +43,16 @@ public class ProiezioneService {
         return proiezioneRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public long count() {
+        return proiezioneRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Proiezione> cerca(String titoloFilm) {
+        return proiezioneRepository.findByFilm_TitoloContainingIgnoreCaseOrderByDataAscOraAsc(titoloFilm);
+    }
+
     @Transactional
     public Proiezione creaProiezione(Long festivalId, Long filmId, Long salaId,
                                       LocalDate data, LocalTime ora) {

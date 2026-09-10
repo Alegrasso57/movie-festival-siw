@@ -39,6 +39,11 @@ public class FilmService {
         return filmRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public long count() {
+        return filmRepository.count();
+    }
+
     @Transactional
     public Film save(Film film) {
         return filmRepository.save(film);

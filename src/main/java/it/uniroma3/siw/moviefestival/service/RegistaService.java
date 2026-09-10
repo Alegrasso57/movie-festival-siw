@@ -25,6 +25,16 @@ public class RegistaService {
         return registaRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public long count() {
+        return registaRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Regista> cerca(String cognome) {
+        return registaRepository.findByCognomeContainingIgnoreCase(cognome);
+    }
+
     @Transactional
     public Regista save(Regista regista) {
         return registaRepository.save(regista);
