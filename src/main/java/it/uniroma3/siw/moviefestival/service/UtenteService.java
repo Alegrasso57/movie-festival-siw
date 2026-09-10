@@ -61,4 +61,49 @@ public class UtenteService {
 
         return utenteRepository.save(utente);
     }
+
+    /**
+     * Aggiorna username e (facoltativamente) password dell'utente indicato.
+     * Se nuovaPasswordInChiaro e' vuota o nulla la password resta invariata:
+     * questo permette il semplice cambio username dal proprio profilo.
+     */
+    @Transactional
+    public Utente aggiornaProfilo(Long id, String nuovoUsername, String nuovaPasswordInChiaro) {
+
+        Utente utente = utenteRepository.findById(id).orElse(null);
+        if (utente == null) {
+            throw new IllegalStateException("Utente non trovato");
+        }
+
+        if (nuovoUsername == null || nuovoUsername.isBlank()) {
+            throw new IllegalArgumentException("Lo username è obbligatorio");
+        }
+        if (nuovoUsername.trim().length() < 3) {
+            throw new IllegalArgumentException("Lo username deve avere almeno 3 caratteri");
+        }
+
+        Utente altro = utenteRepository.findByUsername(nuovoUsername).orElse(null);
+        if (altro != null && !altro.getId().equals(id)) {
+            throw new IllegalStateException("Username già in uso");
+        }
+
+        utente.setUsername(nuovoUsername);
+
+        if (nuovaPasswordInChiaro != null && !nuovaPasswordInChiaro.isBlank()) {
+            if (nuovaPasswordInChiaro.length() < 6) {
+                throw new IllegalArgumentException("La password deve avere almeno 6 caratteri");
+            }
+            utente.setPassword(passwordEncoder.encode(nuovaPasswordInChiaro));
+        }
+
+        return utenteRepository.save(utente);
+    }
+
+    /**
+     * Elimina definitivamente l'account con l'id indicato.
+     */
+    @Transactional
+    public void elimina(Long id) {
+        utenteRepository.deleteById(id);
+    }
 }

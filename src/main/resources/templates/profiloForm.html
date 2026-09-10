@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Modifica profilo</title>
+</head>
+<body>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+        <a th:href="@{/registi}">Registi</a>
+        <a th:href="@{/sale}">Sale</a>
+    </nav>
+    <div class="container pagina-centrata">
+        <h1>Modifica profilo</h1>
+
+        <p th:if="${errore != null}" th:text="${errore}" class="errore">Messaggio di errore</p>
+
+        <form th:action="@{/profilo/modifica}" method="post">
+            <label>Username: <input type="text" name="username" th:value="${utente.username}"></label>
+            <label>Nuova password (lascia vuoto per non cambiarla): <input type="password" name="password"></label>
+            <div class="form-actions">
+                <button type="submit">Salva</button>
+                <a th:href="@{/}" class="btn-annulla">Annulla</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -18,7 +18,10 @@
 
     <div class="container pagina-centrata">
         <div class="hero">
-            <h1>Benvenuto su Movie Festivals</h1>
+            <div class="hero-intestazione">
+                <img th:src="@{/images/camera-icon.png}" alt="Illustrazione di una cinepresa" class="hero-icona">
+                <h1>Benvenuto su Movie Festivals</h1>
+            </div>
             <p class="sottotitolo">Il sito permette di informarti su film, festival, proiezioni e informazioni del mondo cinematografico</p>
 
             <ul class="hero-links">
@@ -35,9 +38,15 @@
 
             <div class="hero-auth" sec:authorize="isAuthenticated()">
                 <p> Benvenuto o bentornato, <span sec:authentication="name">username</span>.</p>
-                <form th:action="@{/logout}" method="post" style="display:inline-block; max-width:none; background:none; border:none; padding:0;">
-                    <button type="submit">Esci </button>
-                </form>
+                <div class="actions">
+                    <a th:href="@{/profilo/modifica}">Modifica</a>
+                    <form th:action="@{/profilo/elimina}" method="post">
+                        <button type="submit">Elimina</button>
+                    </form>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit">Esci</button>
+                    </form>
+                </div>
             </div>
         </div>
 

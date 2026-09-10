@@ -250,6 +250,25 @@ nav.main-nav a:hover {
 }
 
 /* =========================================================================
+   HERO-INTESTAZIONE — l'illustrazione della cinepresa affiancata al
+   titolo, dentro al box di benvenuto (Flexbox in riga, centrata).
+   ========================================================================= */
+.hero-intestazione {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-icona {
+    width: 6rem;
+    height: auto;
+    flex-shrink: 0;
+}
+
+/* =========================================================================
    AREA AMMINISTRATORE — non più un elenco verticale centrato: una serie
    di "tessere" (pillole) affiancate con Flexbox e a capo automatico
    (flex-wrap), come un pannello di scorciatoie invece di un semplice
@@ -597,11 +616,12 @@ button:hover {
    generico di "form" solo dentro .actions */
 
 .actions form {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    max-width: none;
+    /* Il form non deve comportarsi come un elemento a sé nella fila
+       flessibile: "display:contents" lo fa sparire dal layout, così è
+       direttamente il <button> al suo interno a diventare l'elemento
+       della fila (esattamente come il link "Modifica"), senza margini
+       o spazi residui del form che lo spingano lontano dagli altri. */
+    display: contents;
 }
 
 /* Stile comune per Modifica ed Elimina */
@@ -647,6 +667,14 @@ button:hover {
 
 .actions form[action$="elimina"] button:hover {
     background-color: #8c384a;
+}
+
+/* Pulsanti Modifica/Elimina/Esci nel box di benvenuto: stessa riga
+   orizzontale, ravvicinati e centrati sotto il testo di benvenuto
+   (mai a capo, anche su schermi stretti). */
+.hero-auth .actions {
+    flex-wrap: nowrap;
+    gap: 0.6rem;
 }
 /* ===== Coppia Salva/Annulla nei form di amministrazione: stesso tipo di
    pulsante (pillola), vicini e centrati nel box (Flexbox) ===== */
@@ -734,6 +762,15 @@ button:hover {
         padding: 1.75rem 1.5rem;
         margin: 1.25rem auto;
         border-radius: 0.75rem;
+    }
+
+    .hero-intestazione {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero-icona {
+        width: 4.5rem;
     }
 
     .hero h1 {
