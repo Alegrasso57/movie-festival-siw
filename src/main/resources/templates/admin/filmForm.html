@@ -14,6 +14,7 @@
         <a th:href="@{/screenings}">Proiezioni</a>
         <a th:href="@{/registi}">Registi</a>
         <a th:href="@{/sale}">Sale</a>
+        <a th:href="@{/generi}">Generi</a>
     </nav>
 <div class="container pagina-centrata">
     <h1>Film</h1>
@@ -27,7 +28,16 @@
         <label>Titolo: <input type="text" name="titolo" th:value="${film.titolo}"></label>
         <label>Anno: <input type="number" name="anno" th:value="${film.anno}"></label>
         <label>Durata (minuti): <input type="number" name="durata" th:value="${film.durata}"></label>
-        <label>Genere: <input type="text" name="genere" th:value="${film.genere}"></label>
+        <label>Genere:
+            <select name="genereId">
+                <option th:each="genere : ${generi}"
+                        th:value="${genere.id}"
+                        th:text="${genere.nome}"
+                        th:selected="${film.genere != null and film.genere.id == genere.id}">
+                    Nome genere
+                </option>
+            </select>
+        </label>
         <label>Paese di produzione: <input type="text" name="paeseProduzione" th:value="${film.paeseProduzione}"></label>
 
         <label>Regista:

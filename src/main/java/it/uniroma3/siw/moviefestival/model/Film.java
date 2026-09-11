@@ -36,8 +36,12 @@ public class Film {
     @Positive(message = "La durata deve essere maggiore di zero")
     private Integer durata;
 
-    @NotBlank(message = "Il genere è obbligatorio")
-    private String genere;
+    // Il genere è una vera entità (tabella Genere), non più testo libero:
+    // niente @NotNull qui per restare coerente con "regista" qui sotto,
+    // che è risolto e validato manualmente nei controller (FilmAdminController,
+    // FilmRestController) invece che dal binding automatico del form.
+    @ManyToOne
+    private Genere genere;
 
     @NotBlank(message = "Il paese di produzione è obbligatorio")
     private String paeseProduzione;
@@ -95,11 +99,11 @@ public class Film {
         this.durata = durata;
     }
 
-    public String getGenere() {
+    public Genere getGenere() {
         return genere;
     }
 
-    public void setGenere(String genere) {
+    public void setGenere(Genere genere) {
         this.genere = genere;
     }
 

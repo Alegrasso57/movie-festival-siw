@@ -26,15 +26,23 @@ import org.springframework.security.web.SecurityFilterChain;
  * automaticamente nelle form (vedi thymeleaf-extras-springsecurity6); lo
  * stesso vale per /logout, così un semplice form HTML dentro l'app React
  * può disconnettere l'utente senza dover gestire quel token.
+ *
+ * Oltre al login classico (form + tabella Utente) è abilitato anche il
+ * login con Google (OAuth2/OIDC, vedi CustomOidcUserService): entrambi
+ * portano alla stessa sessione autenticata, quindi tutto il resto
+ * dell'applicazione (autorizzazioni, profilo, recensioni...) non deve
+ * distinguere in alcun modo com'è avvenuto l'accesso.
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
+    private final CustomOidcUserService customOidcUserService;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, CustomOidcUserService customOidcUserService) {
         this.userDetailsService = userDetailsService;
+        this.customOidcUserService = customOidcUserService;
     }
 
     @Bean
@@ -64,7 +72,8 @@ public class SecurityConfig {
                         "/festivals", "/festival/**",
                         "/movies", "/movie/**",
                         "/screenings",
-                        "/register", "/login", "/error")
+                        "/register", "/login", "/error",
+                        "/oauth2/**", "/login/oauth2/**")
                 .permitAll()
 
                 .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
@@ -82,6 +91,13 @@ public class SecurityConfig {
                     .loginProcessingUrl("/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
+                    .defaultSuccessUrl("/", true)
+                    .failureUrl("/login?error=true")
+                    .permitAll())
+
+            .oauth2Login(oauth2 -> oauth2
+                    .loginPage("/login")
+                    .userInfoEndpoint(userInfo -> userInfo.oidcUserService(customOidcUserService))
                     .defaultSuccessUrl("/", true)
                     .failureUrl("/login?error=true")
                     .permitAll())

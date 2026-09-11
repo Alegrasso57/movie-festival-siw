@@ -5,8 +5,11 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import it.uniroma3.siw.moviefestival.model.Film;
+import it.uniroma3.siw.moviefestival.model.Genere;
 
 public interface FilmRepository extends JpaRepository<Film, Long> {
+
+    long countByGenere(Genere genere);
 
     // Strategia 1 — LAZY pura: nessun join, Hibernate userà il fetch di default
     @Query("SELECT f FROM Film f")

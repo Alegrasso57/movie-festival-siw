@@ -790,3 +790,35 @@ button:hover {
         max-width: 100%;
     }
 }
+
+/* =========================================================================
+   PAGINA ANALISI PRESTAZIONI — testo discorsivo (introduzione e
+   discussione finale): dentro .pagina-centrata il testo è centrato per
+   default, ma per paragrafi lunghi è più leggibile allineato a sinistra
+   e con una larghezza massima, come un blocco di testo normale.
+   ========================================================================= */
+.testo-esplicativo {
+    text-align: left;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.discussione-performance {
+    margin-top: 1.5rem;
+}
+
+.discussione-performance h2 {
+    text-align: center;
+}
+
+/* Pulsante "Accedi con Google" nel box di benvenuto: stessa forma a
+   pillola di Modifica/Elimina/Esci (eredita tutto da .actions a), solo il
+   colore cambia per riprendere il blu associato a Google. */
+.actions a.btn-google {
+    background-color: #4285f4;
+}
+
+.actions a.btn-google:hover {
+    background-color: #3367d6;
+}

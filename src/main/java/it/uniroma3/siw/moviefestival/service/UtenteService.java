@@ -100,6 +100,29 @@ public class UtenteService {
     }
 
     /**
+     * Collega il login con Google a un Utente della nostra tabella: se un
+     * utente con questa email (usata come username) non esiste ancora, lo
+     * crea con ruolo USER. La password è casuale e cifrata: chi entra con
+     * Google non la userà mai (il campo esiste solo perché non è nullable),
+     * quindi non c'è nessun problema di sicurezza nel generarla qui.
+     */
+    @Transactional
+    public Utente trovaOCreaUtenteGoogle(String email) {
+
+        Utente esistente = utenteRepository.findByUsername(email).orElse(null);
+        if (esistente != null) {
+            return esistente;
+        }
+
+        Utente utente = new Utente();
+        utente.setUsername(email);
+        utente.setPassword(passwordEncoder.encode(java.util.UUID.randomUUID().toString()));
+        utente.setRuolo(Ruolo.USER);
+
+        return utenteRepository.save(utente);
+    }
+
+    /**
      * Elimina definitivamente l'account con l'id indicato.
      */
     @Transactional

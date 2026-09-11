@@ -14,6 +14,7 @@
         <a th:href="@{/screenings}">Proiezioni</a>
         <a th:href="@{/registi}">Registi</a>
         <a th:href="@{/sale}">Sale</a>
+        <a th:href="@{/generi}">Generi</a>
     </nav>
 
     <div class="container pagina-centrata">
@@ -22,7 +23,7 @@
         <div class="dettaglio-info">
             <p>Anno: <span th:text="${film.anno}">Anno</span></p>
             <p>Durata: <span th:text="${film.durata} + ' minuti'">Durata</span></p>
-            <p>Genere: <span th:text="${film.genere}">Genere</span></p>
+            <p>Genere: <span th:text="${film.genere?.nome}">Genere</span></p>
             <p>Paese di produzione: <span th:text="${film.paeseProduzione}">Paese</span></p>
         </div>
 

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Analisi delle prestazioni</title>
+</head>
+<body>
+    <nav class="main-nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/festivals}">Festival</a>
+        <a th:href="@{/movies}">Film</a>
+        <a th:href="@{/screenings}">Proiezioni</a>
+        <a th:href="@{/registi}">Registi</a>
+        <a th:href="@{/sale}">Sale</a>
+    </nav>
+    <div class="container pagina-centrata">
+        <h1>Analisi delle prestazioni</h1>
+
+        <p class="testo-esplicativo">
+            Confronto tra tre strategie di caricamento delle associazioni JPA
+            (<strong>LAZY</strong>, <strong>JOIN FETCH</strong>, <strong>@EntityGraph</strong>),
+            misurando quante query SQL vengono eseguite e quanto tempo impiegano.
+            Statistiche Hibernate attive: <strong th:text="${confronto.statisticheAttive} ? 'sì' : 'no'">sì</strong>.
+        </p>
+
+        <h2>Film &rarr; Regista (relazione @ManyToOne)</h2>
+        <div class="grid">
+            <div class="card" th:each="r : ${confronto.risultatiFilmRegista}">
+                <h2 th:text="${r.nomeStrategia}">Strategia</h2>
+                <ul class="card-details">
+                    <li><span th:text="${r.etichettaElementi} + ': ' + ${r.elementiCaricati}">Film caricati: 0</span></li>
+                    <li><span th:text="'Query SQL: ' + ${r.querySql}">Query SQL: 0</span></li>
+                    <li><span th:text="'Tempo: ' + ${r.tempoMs} + ' ms'">Tempo: 0 ms</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Festival &rarr; Film (relazione @ManyToMany)</h2>
+        <div class="grid">
+            <div class="card" th:each="r : ${confronto.risultatiFestivalFilm}">
+                <h2 th:text="${r.nomeStrategia}">Strategia</h2>
+                <ul class="card-details">
+                    <li><span th:text="${r.etichettaElementi} + ': ' + ${r.elementiCaricati}">Festival caricati: 0</span></li>
+                    <li><span th:text="'Query SQL: ' + ${r.querySql}">Query SQL: 0</span></li>
+                    <li><span th:text="'Tempo: ' + ${r.tempoMs} + ' ms'">Tempo: 0 ms</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="discussione-performance testo-esplicativo">
+            <h2>Discussione delle scelte</h2>
+            <p>
+                La differenza importante tra le tre strategie è il <strong>numero di query SQL</strong>
+                eseguite, più significativo del tempo assoluto misurato qui su pochi record.
+            </p>
+            <p>
+                <strong>LAZY</strong> è il fetch type di default delle associazioni JPA: carica prima gli
+                oggetti principali con una query, poi esegue <strong>una query aggiuntiva per ogni
+                associazione effettivamente usata</strong> (il regista di ogni film, o la collezione di
+                film di ogni festival). È il classico "problema N+1": con 5 film servono 6 query (1+5),
+                con 4 festival ne servono 5 (1+4).
+            </p>
+            <p>
+                <strong>JOIN FETCH</strong> è una JPQL esplicita scritta nel repository
+                (es. <code>JOIN FETCH f.regista</code>) che recupera tutto in un'unica query con un JOIN,
+                eliminando le query N+1. Quando l'associazione è una collezione (qui, i film di un
+                festival, relazione @ManyToMany), il JOIN produce una riga duplicata del festival per
+                ogni film collegato: per questo il metodo usa <strong>DISTINCT</strong>, altrimenti
+                verrebbero restituite più copie dello stesso festival.
+            </p>
+            <p>
+                <strong>@EntityGraph</strong> ottiene lo stesso risultato (1 query, associazione già
+                popolata) in modo dichiarativo: si annota il metodo del repository indicando quali
+                associazioni includere, invece di scrivere la JPQL a mano. È più leggibile e riusabile,
+                ma nei test qui sopra risulta leggermente più lento della JOIN FETCH esplicita: è normale,
+                perché Hibernate deve prima tradurre l'EntityGraph nella query effettiva, un piccolo
+                overhead che la JOIN FETCH (già scritta come JPQL statica) non ha.
+            </p>
+            <p>
+                Per questo motivo LAZY resta la scelta corretta come comportamento <em>di default</em>
+                delle associazioni (evita di caricare sempre tutto il grafo delle entità), mentre JOIN
+                FETCH ed EntityGraph vanno usati solo nei punti dell'applicazione — come le pagine elenco
+                di Film e Festival — dove si sa già che quell'associazione servirà subito dopo.
+            </p>
+        </div>
+
+        <p><a th:href="@{/}">Torna alla home</a></p>
+    </div>
+</body>
+</html>

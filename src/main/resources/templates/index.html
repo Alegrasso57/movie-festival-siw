@@ -14,6 +14,7 @@
         <a th:href="@{/screenings}">Proiezioni</a>
         <a th:href="@{/registi}">Registi</a>
         <a th:href="@{/sale}">Sale</a>
+        <a th:href="@{/generi}">Generi</a>
     </nav>
 
     <div class="container pagina-centrata">
@@ -30,10 +31,16 @@
                 <li><a th:href="@{/screenings}">Programma proiezioni</a></li>
                 <li><a th:href="@{/registi}">Elenco Registi</a> </li>
                 <li><a th:href="@{/sale}">Elenco Sale</a></li>
+                <li><a th:href="@{/generi}">Elenco Generi</a></li>
             </ul>
 
             <div class="hero-auth" sec:authorize="!isAuthenticated()">
-                <p><a th:href="@{/login}">Accedi</a> o <a th:href="@{/register}">registrati</a> per scrivere recensioni.</p>
+                <p>Accedi per scrivere recensioni.</p>
+                <div class="actions">
+                    <a th:href="@{/login}">Accedi</a>
+                    <a th:href="@{/register}">Registrati</a>
+                    <a th:href="@{/oauth2/authorization/google}" class="btn-google">Accedi con Google</a>
+                </div>
             </div>
 
             <div class="hero-auth" sec:authorize="isAuthenticated()">
@@ -58,6 +65,7 @@
                 <li><a th:href="@{/admin/film}">Gestione Film</a></li>
                 <li><a th:href="@{/admin/festival}">Gestione Festival</a></li>
                 <li><a th:href="@{/admin/proiezioni}">Gestione Proiezioni</a></li>
+                <li><a th:href="@{/admin/generi}">Gestione Generi</a></li>
                 <li><a th:href="@{/admin/performance}">Analisi delle prestazioni</a></li>
             </ul>
         </div>

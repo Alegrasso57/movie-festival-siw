@@ -2,6 +2,7 @@ package it.uniroma3.siw.moviefestival.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,10 @@ import it.uniroma3.siw.moviefestival.repository.SalaRepository;
 
 @Service
 public class ProiezioneService {
+
+    // Formato italiano gg/mm/aaaa usato nei messaggi mostrati all'utente
+    // (i LocalDate internamente restano in ISO, cambia solo la stampa).
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final ProiezioneRepository proiezioneRepository;
     private final FestivalRepository festivalRepository;
@@ -84,7 +89,7 @@ public class ProiezioneService {
         boolean salaOccupata = proiezioneRepository.existsBySalaAndDataAndOra(sala, data, ora);
         if (salaOccupata) {
             throw new IllegalStateException(
-                "La sala '" + sala.getNome() + "' è già occupata in data " + data + " alle ore " + ora);
+                "La sala '" + sala.getNome() + "' è già occupata in data " + data.format(FORMATO_DATA) + " alle ore " + ora);
         }
 
         Proiezione proiezione = new Proiezione();
@@ -140,7 +145,7 @@ public class ProiezioneService {
         boolean salaOccupata = proiezioneRepository.existsBySalaAndDataAndOraAndIdNot(sala, data, ora, id);
         if (salaOccupata) {
             throw new IllegalStateException(
-                "La sala '" + sala.getNome() + "' è già occupata in data " + data + " alle ore " + ora);
+                "La sala '" + sala.getNome() + "' è già occupata in data " + data.format(FORMATO_DATA) + " alle ore " + ora);
         }
 
         proiezione.setFestival(festival);
@@ -160,8 +165,8 @@ public class ProiezioneService {
     private void validaFinestraTemporale(Festival festival, LocalDate data) {
         if (data.isBefore(festival.getDataInizio()) || data.isAfter(festival.getDataFine())) {
             throw new IllegalStateException(
-                "La data " + data + " è fuori dalla finestra del festival '" + festival.getNome()
-                    + "' (dal " + festival.getDataInizio() + " al " + festival.getDataFine() + ")");
+                "La data " + data.format(FORMATO_DATA) + " è fuori dalla finestra del festival '" + festival.getNome()
+                    + "' (dal " + festival.getDataInizio().format(FORMATO_DATA) + " al " + festival.getDataFine().format(FORMATO_DATA) + ")");
         }
     }
 

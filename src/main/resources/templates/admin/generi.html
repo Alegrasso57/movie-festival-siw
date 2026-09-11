@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Gestione Sale</title>
+    <title>Gestione Generi</title>
 </head>
 <body>
     <nav class="main-nav">
@@ -17,21 +17,20 @@
         <a th:href="@{/generi}">Generi</a>
     </nav>
 <div class="container pagina-centrata">
-    <h1>Gestione Sale</h1>
+    <h1>Gestione Generi</h1>
 
     <p class="errore" th:if="${erroreEliminazione}" th:text="${erroreEliminazione}"></p>
 
-    <a th:href="@{/admin/sale/nuova}">+ Nuova sala</a>
+    <a th:href="@{/admin/generi/nuovo}">+ Nuovo genere</a>
 
     <div class="grid">
-    <div class="card" th:each="sala : ${sale}">
-        <h2 th:text="${sala.nome} + ' (' + ${sala.capienza} + ' posti)'">Nome (capienza)</h2>
+    <div class="card" th:each="genere : ${generi}">
+        <h2 th:text="${genere.nome}">Nome genere</h2>
         <ul class="card-details">
-            <li><span th:text="'Situata in ' + ${sala.indirizzo}">Indirizzo</span></li>
         </ul>
         <div class="actions">
-            <a th:href="@{/admin/sale/{id}/modifica(id=${sala.id})}">Modifica</a>
-            <form th:action="@{/admin/sale/{id}/elimina(id=${sala.id})}" method="post">
+            <a th:href="@{/admin/generi/{id}/modifica(id=${genere.id})}">Modifica</a>
+            <form th:action="@{/admin/generi/{id}/elimina(id=${genere.id})}" method="post">
                 <button type="submit">Elimina</button>
             </form>
         </div>

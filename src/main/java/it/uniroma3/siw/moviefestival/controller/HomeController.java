@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import it.uniroma3.siw.moviefestival.service.FestivalService;
 import it.uniroma3.siw.moviefestival.service.FilmService;
+import it.uniroma3.siw.moviefestival.service.GenereService;
 import it.uniroma3.siw.moviefestival.service.ProiezioneService;
 import it.uniroma3.siw.moviefestival.service.RegistaService;
 import it.uniroma3.siw.moviefestival.service.SalaService;
@@ -18,17 +19,20 @@ public class HomeController {
     private final ProiezioneService proiezioneService;
     private final SalaService salaService;
     private final RegistaService registaService;
+    private final GenereService genereService;
 
     public HomeController(FilmService filmService,
                            FestivalService festivalService,
                            ProiezioneService proiezioneService,
                            SalaService salaService,
-                           RegistaService registaService) {
+                           RegistaService registaService,
+                           GenereService genereService) {
         this.filmService = filmService;
         this.festivalService = festivalService;
         this.proiezioneService = proiezioneService;
         this.salaService = salaService;
         this.registaService = registaService;
+        this.genereService = genereService;
     }
 
     @GetMapping("/")
@@ -38,6 +42,7 @@ public class HomeController {
         model.addAttribute("numeroRegisti", registaService.count());
         model.addAttribute("numeroProiezioni", proiezioneService.count());
         model.addAttribute("numeroSale", salaService.count());
+        model.addAttribute("numeroGeneri", genereService.count());
         return "index";
 
     }

@@ -15,8 +15,10 @@ import it.uniroma3.siw.moviefestival.dto.FilmCreateDTO;
 import it.uniroma3.siw.moviefestival.dto.FilmDTO;
 import it.uniroma3.siw.moviefestival.dto.RecensioneDTO;
 import it.uniroma3.siw.moviefestival.model.Film;
+import it.uniroma3.siw.moviefestival.model.Genere;
 import it.uniroma3.siw.moviefestival.model.Regista;
 import it.uniroma3.siw.moviefestival.service.FilmService;
+import it.uniroma3.siw.moviefestival.service.GenereService;
 import it.uniroma3.siw.moviefestival.service.RecensioneService;
 import it.uniroma3.siw.moviefestival.service.RegistaService;
 
@@ -27,13 +29,16 @@ public class FilmRestController {
     private final FilmService filmService;
     private final RecensioneService recensioneService;
     private final RegistaService registaService;
+    private final GenereService genereService;
 
     public FilmRestController(FilmService filmService,
                                RecensioneService recensioneService,
-                               RegistaService registaService) {
+                               RegistaService registaService,
+                               GenereService genereService) {
         this.filmService = filmService;
         this.recensioneService = recensioneService;
         this.registaService = registaService;
+        this.genereService = genereService;
     }
 
     @GetMapping("/movies")
@@ -98,11 +103,16 @@ public class FilmRestController {
             return ResponseEntity.badRequest().body(Map.of("errore", "Regista non trovato"));
         }
 
+        // Il form React continua a mandare il genere come testo libero:
+        // lo risolviamo su un Genere esistente (case-insensitive) o ne
+        // creiamo uno nuovo al volo, così la UI non deve cambiare.
+        Genere genere = genereService.trovaOCrea(body.getGenere());
+
         Film film = new Film();
         film.setTitolo(body.getTitolo());
         film.setAnno(body.getAnno());
         film.setDurata(body.getDurata());
-        film.setGenere(body.getGenere());
+        film.setGenere(genere);
         film.setPaeseProduzione(body.getPaeseProduzione());
         film.setRegista(regista);
 
