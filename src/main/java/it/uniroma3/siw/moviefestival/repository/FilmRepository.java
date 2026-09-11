@@ -23,4 +23,5 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
     @EntityGraph(attributePaths = {"regista"})
     @Query("SELECT f FROM Film f")
     List<Film> findAllWithRegistaEntityGraph();
+
 }
