@@ -4,12 +4,12 @@ import it.uniroma3.siw.moviefestival.model.Proiezione;
 
 public class ProiezioneDTO {
 
-    private Long id;
-    private String data;
-    private String ora;
-    private String stato;
-    private String filmTitolo;
-    private String salaNome;
+    private final Long id;
+    private final String data;
+    private final String ora;
+    private final String stato;
+    private final String filmTitolo;
+    private final String salaNome;
 
     public ProiezioneDTO(Proiezione proiezione) {
         this.id = proiezione.getId();

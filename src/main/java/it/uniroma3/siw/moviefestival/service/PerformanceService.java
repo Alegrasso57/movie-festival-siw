@@ -39,11 +39,7 @@ public class PerformanceService {
         risultatiFilmRegista.add(eseguiStrategiaFilm(stats, "JOIN FETCH", () -> filmRepository.findAllWithRegistaJoinFetch()));
         risultatiFilmRegista.add(eseguiStrategiaFilm(stats, "EntityGraph", () -> filmRepository.findAllWithRegistaEntityGraph()));
 
-        // Secondo confronto, stavolta su una relazione @ManyToMany (una
-        // collezione, non una singola entita' come Film-Regista): mostra
-        // anche la duplicazione delle righe che un JOIN su una collezione
-        // puo' introdurre, e perche' findAllWithFilmJoinFetch() usa DISTINCT
-        // per riportarle a una riga per festival.
+        
         List<RisultatoBenchmarkDTO> risultatiFestivalFilm = new ArrayList<>();
         risultatiFestivalFilm.add(eseguiStrategiaFestival(stats, "LAZY", () -> festivalRepository.findAllLazy()));
         risultatiFestivalFilm.add(eseguiStrategiaFestival(stats, "JOIN FETCH", () -> festivalRepository.findAllWithFilmJoinFetch()));
@@ -76,8 +72,7 @@ public class PerformanceService {
         long inizio = System.currentTimeMillis();
 
         List<Festival> festival = operazione.get();
-        // Tocca la collezione "film" di ogni festival: se e' ancora LAZY,
-        // e' qui che scatta la query aggiuntiva (una per festival).
+       
         for (Festival f : festival) {
             f.getFilm().size();
         }

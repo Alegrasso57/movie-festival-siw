@@ -4,11 +4,11 @@ import it.uniroma3.siw.moviefestival.model.Recensione;
 
 public class RecensioneDTO {
 
-    private Long id;
-    private String testo;
-    private Integer voto;
-    private String data;
-    private String autoreUsername;
+    private final Long id;
+    private final String testo;
+    private final Integer voto;
+    private final String data;
+    private final String autoreUsername;
 
     public RecensioneDTO(Recensione recensione) {
         this.id = recensione.getId();

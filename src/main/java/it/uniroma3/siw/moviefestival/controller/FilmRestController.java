@@ -3,6 +3,7 @@ package it.uniroma3.siw.moviefestival.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import it.uniroma3.siw.moviefestival.dto.FilmCreateDTO;
 import it.uniroma3.siw.moviefestival.dto.FilmDTO;
 import it.uniroma3.siw.moviefestival.dto.RecensioneDTO;
@@ -72,10 +74,7 @@ public class FilmRestController {
         return ResponseEntity.ok(dto);
     }
 
-    /**
-     * Creazione di un film via REST, usata dal form React MovieCreateDialog.
-     * Riservata agli ADMIN (vedi SecurityConfig.apiFilterChain).
-     */
+    
     @PostMapping("/movies")
     public ResponseEntity<?> creaFilm(@RequestBody FilmCreateDTO body) {
 
@@ -103,9 +102,7 @@ public class FilmRestController {
             return ResponseEntity.badRequest().body(Map.of("errore", "Regista non trovato"));
         }
 
-        // Il form React continua a mandare il genere come testo libero:
-        // lo risolviamo su un Genere esistente (case-insensitive) o ne
-        // creiamo uno nuovo al volo, così la UI non deve cambiare.
+        
         Genere genere = genereService.trovaOCrea(body.getGenere());
 
         Film film = new Film();

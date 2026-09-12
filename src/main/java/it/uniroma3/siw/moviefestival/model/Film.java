@@ -36,10 +36,6 @@ public class Film {
     @Positive(message = "La durata deve essere maggiore di zero")
     private Integer durata;
 
-    // Il genere è una vera entità (tabella Genere), non più testo libero:
-    // niente @NotNull qui per restare coerente con "regista" qui sotto,
-    // che è risolto e validato manualmente nei controller (FilmAdminController,
-    // FilmRestController) invece che dal binding automatico del form.
     @ManyToOne
     private Genere genere;
 

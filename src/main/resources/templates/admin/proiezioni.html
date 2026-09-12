@@ -21,8 +21,7 @@
 
     <a th:href="@{/admin/proiezioni/nuova}">+ Nuova proiezione</a>
 
-    <!-- proiezioniList arriva già ordinata per data/ora (vedi
-         ProiezioneRepository.findAllByOrderByDataAscOraAsc) -->
+    
     <div class="grid">
     <div class="card" th:each="proiezione : ${proiezioniList}">
         <ul class="card-details">

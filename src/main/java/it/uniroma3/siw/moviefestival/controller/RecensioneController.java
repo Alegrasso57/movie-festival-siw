@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import it.uniroma3.siw.moviefestival.model.Recensione;
 import it.uniroma3.siw.moviefestival.model.Utente;
 import it.uniroma3.siw.moviefestival.service.RecensioneService;
@@ -38,8 +39,7 @@ public String creaRecensione(@PathVariable("id") Long filmId,
     try {
         recensioneService.creaRecensione(filmId, utente.getId(), testo, voto);
     } catch (IllegalStateException | IllegalArgumentException e) {
-        // Errore di validazione o recensione duplicata: per ora ignoriamo silenziosamente,
-        // dato che la validazione HTML lato client (min/max sull'input) copre già i casi comuni
+       
     }
 
     return "redirect:/movie/" + filmId;

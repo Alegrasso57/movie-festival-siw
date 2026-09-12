@@ -1,7 +1,5 @@
 package it.uniroma3.siw.moviefestival.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -9,16 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import it.uniroma3.siw.moviefestival.model.Utente;
 import it.uniroma3.siw.moviefestival.service.UtenteService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-/**
- * Gestione del profilo dell'utente attualmente autenticato: permette di
- * cambiare username/password o di eliminare il proprio account. Tutte le
- * rotte sotto /profilo richiedono un utente autenticato (regola di default
- * "anyRequest().authenticated()" in SecurityConfig, nessuna modifica
- * necessaria li').
- */
+
 @Controller
 public class ProfiloController {
 
@@ -60,8 +55,7 @@ public class ProfiloController {
             return "profiloForm";
         }
 
-        // Username o password sono cambiati: invalidiamo la sessione corrente,
-        // l'utente dovra' accedere di nuovo con le nuove credenziali.
+        
         new SecurityContextLogoutHandler().logout(request, response, authentication);
         return "redirect:/login?modificato=true";
     }

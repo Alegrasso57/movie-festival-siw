@@ -4,13 +4,13 @@ import it.uniroma3.siw.moviefestival.model.Film;
 
 public class FilmDTO {
 
-    private Long id;
-    private String titolo;
-    private Integer anno;
-    private Integer durata;
-    private String genere;
-    private String paeseProduzione;
-    private String registaNome;
+    private final Long id;
+    private final String titolo;
+    private final Integer anno;
+    private final Integer durata;
+    private final String genere;
+    private final String paeseProduzione;
+    private final String registaNome;
 
     public FilmDTO(Film film) {
         this.id = film.getId();
@@ -19,9 +19,9 @@ public class FilmDTO {
         this.durata = film.getDurata();
         this.genere = film.getGenere() != null ? film.getGenere().getNome() : null;
         this.paeseProduzione = film.getPaeseProduzione();
-        if (film.getRegista() != null) {
-            this.registaNome = film.getRegista().getNome() + " " + film.getRegista().getCognome();
-        }
+        this.registaNome = film.getRegista() != null
+                ? film.getRegista().getNome() + " " + film.getRegista().getCognome()
+                : null;
     }
 
     public Long getId() { return id; }

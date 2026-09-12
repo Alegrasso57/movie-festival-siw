@@ -4,9 +4,9 @@ import it.uniroma3.siw.moviefestival.model.Regista;
 
 public class RegistaDTO {
 
-    private Long id;
-    private String nome;
-    private String cognome;
+    private final Long id;
+    private final String nome;
+    private final String cognome;
 
     public RegistaDTO(Regista regista) {
         this.id = regista.getId();

@@ -1,11 +1,6 @@
 package it.uniroma3.siw.moviefestival.dto;
 
-/**
- * Un singolo risultato del confronto tra strategie di fetch (LAZY, JOIN
- * FETCH, EntityGraph): quante entita' sono state caricate, quante query SQL
- * Hibernate ha eseguito e quanto tempo e' servito. Usato solo per mostrare
- * i risultati nella pagina /admin/performance, non e' un'entita' JPA.
- */
+
 public class RisultatoBenchmarkDTO {
 
     private final String nomeStrategia;

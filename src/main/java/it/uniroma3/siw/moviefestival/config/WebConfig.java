@@ -2,6 +2,7 @@ package it.uniroma3.siw.moviefestival.config;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -11,19 +12,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
-/**
- * Serve la build statica del frontend React (cartella frontend/dist, generata
- * con "npm run build") sotto /app, così l'app React è raggiungibile dallo
- * stesso sito Spring Boot su :8080 invece che da un server separato.
- * Per lo sviluppo con hot-reload si continua a usare "npm run dev" su :5173
- * (che proxa le chiamate /api verso questo backend, vedi vite.config.ts).
- *
- * La cartella frontend/dist viene cercata a partire dalla working directory
- * del processo, risalendo fino a qualche livello superiore: IDE diversi
- * possono avviare l'applicazione con working directory diverse, quindi non
- * ci si affida a un singolo percorso relativo fisso. All'avvio viene
- * stampato un log che indica dove è stata trovata (o l'avviso se non lo è).
- */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -32,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static File trovaCartellaDist() {
         File base = new File(".").getAbsoluteFile();
-        File candidata = null;
+        File candidata;
         for (int i = 0; i < 5 && base != null; i++) {
             candidata = new File(base, "frontend/dist");
             if (candidata.isDirectory() && new File(candidata, "index.html").isFile()) {
@@ -70,9 +58,7 @@ public class WebConfig implements WebMvcConfigurer {
                             return richiesta;
                         }
 
-                        // Percorso lato client di React Router (es. /app/login): non
-                        // esiste come file fisico, si restituisce index.html e sarà
-                        // React Router a decidere quale pagina mostrare.
+                        
                         return indexHtml;
                     }
                 });

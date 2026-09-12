@@ -20,20 +20,15 @@ public class Utente {
     @Size(min = 3, message = "Lo username deve avere almeno 3 caratteri")
     private String username;
 
-    // Contiene l'hash bcrypt, non la password in chiaro: la lunghezza
-    // minima sulla password in chiaro viene controllata a monte in
-    // UtenteService.registra(), prima della cifratura.
     @NotBlank(message = "La password è obbligatoria")
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
 
-    // Costruttore vuoto, richiesto da JPA/Hibernate
     public Utente() {
     }
 
-    // Getter e Setter
     public Long getId() {
         return id;
     }

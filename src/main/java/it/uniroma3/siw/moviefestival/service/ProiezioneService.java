@@ -19,8 +19,7 @@ import it.uniroma3.siw.moviefestival.repository.SalaRepository;
 @Service
 public class ProiezioneService {
 
-    // Formato italiano gg/mm/aaaa usato nei messaggi mostrati all'utente
-    // (i LocalDate internamente restano in ISO, cambia solo la stampa).
+    
     private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final ProiezioneRepository proiezioneRepository;

@@ -1,7 +1,7 @@
 package it.uniroma3.siw.moviefestival.controller;
 
-import jakarta.validation.Valid;
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import it.uniroma3.siw.moviefestival.model.Festival;
 import it.uniroma3.siw.moviefestival.service.FestivalService;
 import it.uniroma3.siw.moviefestival.service.FilmService;
+import jakarta.validation.Valid;
 
 @Controller
 public class FestivalAdminController {
@@ -63,9 +65,7 @@ public class FestivalAdminController {
             return "admin/festivalForm";
         }
 
-        // La logica di aggiornamento dei film partecipanti (tabella di join
-        // ManyToMany) è nel Service, non qui: vedi FestivalService.save
-        // per il perché non basta un semplice festival.setFilm(...).
+        
         festivalService.save(festivalForm, filmIds);
         return "redirect:/admin/festival";
     }

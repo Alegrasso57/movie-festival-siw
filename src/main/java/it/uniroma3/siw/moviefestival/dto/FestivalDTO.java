@@ -4,13 +4,13 @@ import it.uniroma3.siw.moviefestival.model.Festival;
 
 public class FestivalDTO {
 
-    private Long id;
-    private String nome;
-    private Integer anno;
-    private String citta;
-    private String dataInizio;
-    private String dataFine;
-    private String descrizione;
+    private final Long id;
+    private final String nome;
+    private final Integer anno;
+    private final String citta;
+    private final String dataInizio;
+    private final String dataFine;
+    private final String descrizione;
 
     public FestivalDTO(Festival festival) {
         this.id = festival.getId();

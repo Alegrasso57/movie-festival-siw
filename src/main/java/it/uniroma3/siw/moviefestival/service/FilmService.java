@@ -2,8 +2,10 @@ package it.uniroma3.siw.moviefestival.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import it.uniroma3.siw.moviefestival.model.Festival;
 import it.uniroma3.siw.moviefestival.model.Film;
 import it.uniroma3.siw.moviefestival.repository.FilmRepository;
@@ -27,10 +29,7 @@ public class FilmService {
 
     @Transactional(readOnly = true)
     public List<Film> findAll() {
-        // Usa la query con JOIN FETCH invece del semplice findAll(): il
-        // Regista viene caricato subito insieme al Film in un'unica query
-        // SQL, evitando il problema N+1 dimostrato da PerformanceService
-        // (vedi Strategia 1 vs Strategia 2 in /admin/performance).
+       
         return filmRepository.findAllWithRegistaJoinFetch();
     }
 

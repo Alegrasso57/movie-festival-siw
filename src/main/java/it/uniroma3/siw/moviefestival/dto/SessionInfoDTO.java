@@ -1,10 +1,6 @@
 package it.uniroma3.siw.moviefestival.dto;
 
-/**
- * Risposta di GET /api/auth/me: dice al frontend React chi è l'utente
- * corrente secondo la sessione HTTP (la stessa creata dal login Thymeleaf),
- * senza bisogno di un token separato.
- */
+
 public class SessionInfoDTO {
 
     private boolean autenticato;

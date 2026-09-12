@@ -2,11 +2,7 @@ package it.uniroma3.siw.moviefestival.dto;
 
 import java.util.List;
 
-/**
- * Raccoglie tutti i risultati del confronto tra strategie di fetch, cosi'
- * la pagina /admin/performance puo' mostrarli in modo leggibile invece di
- * un semplice blocco di testo.
- */
+
 public class ConfrontoPerformanceDTO {
 
     private final boolean statisticheAttive;
