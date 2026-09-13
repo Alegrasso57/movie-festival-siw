@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>Elenco Film</title>
+    <title>Elenco Film</title> 
+    
 </head>
 <body>
     <nav class="main-nav">
@@ -19,7 +20,6 @@
 
     <div class="container pagina-centrata">
         <h1>Film</h1>
-
         <form class="nav-search" th:action="@{/app}" method="get">
             <input type="search" name="q" placeholder="Cerca film">
             <button type="submit" aria-label="Cerca">&#128269;</button>

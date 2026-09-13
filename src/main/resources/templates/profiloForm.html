@@ -23,7 +23,7 @@
 
         <form th:action="@{/profilo/modifica}" method="post">
             <label>Username: <input type="text" name="username" th:value="${utente.username}"></label>
-            <label>Nuova password (lascia vuoto per non cambiarla): <input type="password" name="password"></label>
+            <label>Nuova password: <input type="password" name="password"></label>
             <div class="form-actions">
                 <button type="submit">Salva</button>
                 <a th:href="@{/}" class="btn-annulla">Annulla</a>
