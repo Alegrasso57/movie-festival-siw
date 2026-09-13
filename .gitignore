@@ -31,6 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-# Credenziali locali: non deve mai finire su GitHub
-src/main/resources/application.properties
